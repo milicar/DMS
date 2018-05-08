@@ -1,39 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Created by IntelliJ IDEA.
-  User: milicar
-  Date: 5.5.18.
-  Time: 00.58
--->
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-    <title>Document Type Form</title>
-</h:head>
-<h:form id="documentTypeForm">
-    <p:panel header="Document Type">
-        <h:panelGrid columns="1">
-            <p:outputLabel for="name" value="Name: " />
-            <p:inputText id="name" value="#{documentTypeController.documentType.name}"/>
-            <p:outputLabel for="location" value="Model location:"/>
-            <p:inputText id="location" value="#{documentTypeController.documentType.modelLocation}"/>
-            <p:outputLabel for="description" value="Short description: "/>
-            <p:inputText id="description" value="#{documentTypeController.documentType.shortDescription}"/>
-            <h:commandButton value="Save" action="#{documentTypeController.save}"/>
-        </h:panelGrid>
-    </p:panel>
-</h:form>
+    <h:head>
+        <title>Document Type Form</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="documentTypeForm">
+                    <p:panel header="Document Type">
+                        <h:panelGrid columns="1">
 
-<h:body>
+                            <p:outputLabel rendered="false" value="ID: #{documentTypeController.documentType.documentTypeID}"/>
+                            <p:outputLabel for="name" value="Name: " />
+                            <p:inputText id="name" value="#{documentTypeController.documentType.name}"
+                                         required="true" requiredMessage="Document type name is not valid."/>
+                            <h:message for="name"/>
+                            <p:outputLabel for="location" value="Model location:"/>
+                            <p:inputText id="location" value="#{documentTypeController.documentType.modelLocation}"
+                                         required="true" requiredMessage="Please provide document type's location."/>
+                            <h:message for="location"/>
 
-</h:body>
+                            <p:outputLabel for="description" value="Short description: "/>
+                            <p:inputText id="description" value="#{documentTypeController.documentType.shortDescription}"/>
+                            <p:outputLabel value="Descriptors: "/>
 
-</html>
+                            
+
+
+
+                            <p:repeat var="descriptor" value="#{documentTypeController.descriptorList}">
+
+                               
+                                    <p:panelGrid columns="2">
+                                        <p:column>
+                                            <p:outputLabel value="#{descriptor.descriptorName} "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:commandButton value="Delete" action="#{documentTypeController.deleteDescriptor(descriptor)}"/>
+                                        </p:column>
+                                    </p:panelGrid>
+                                
+
+                            </p:repeat>
+                            <br/>
+
+                            <ui:insert name="newDescriptorsHere"/>
+
+                            <h:commandButton value="Add descriptor" action="#{documentTypeController.insertDescriptor()}"/>
+                            <br/>
+
+                            <h:commandButton value="Save" action="#{documentTypeController.save}"/>
+                        </h:panelGrid>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</f:view>

@@ -16,6 +16,25 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`dms` /*!40100 DEFAULT CHARACTER SET utf
 
 USE `dms`;
 
+/*Table structure for table `document_type_descriptor` */
+
+DROP TABLE IF EXISTS `document_type_descriptor`;
+
+CREATE TABLE `document_type_descriptor` (
+  `doctype_descriptor_id` bigint(15) NOT NULL AUTO_INCREMENT,
+  `doctype_name` varchar(30) DEFAULT NULL,
+  `doctype_id` bigint(15) NOT NULL,
+  PRIMARY KEY (`doctype_descriptor_id`,`doctype_id`),
+  KEY `doctype_fk` (`doctype_id`),
+  CONSTRAINT `doctype_fk` FOREIGN KEY (`doctype_id`) REFERENCES `document_type` (`document_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `document_type_descriptor` */
+
+insert into `document_type_descriptor`(`doctype_descriptor_id`, `doctype_name`, `doctype_id`) values
+(1,'Descriptor1 for DocType1',1),
+(2,'Descriptor2 for DocType3',3);
+
 /*Table structure for table `document_type` */
 
 DROP TABLE IF EXISTS `document_type`;

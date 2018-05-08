@@ -1,23 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Created by IntelliJ IDEA.
-  User: milicar
-  Date: 5.5.18.
-  Time: 02.06
--->
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
 
-<h:head>
-    <title>View Document Type</title>
-</h:head>
-
-<h:body>
-    <p>Document Type Details <br/> maybe one day</p>
-</h:body>
-
-</html>
+    <h:head>
+        <title>View Document Type</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="documentTypeDetails">
+                    <p:panel header="Document Type">
+                        <h:panelGrid columns="1">
+                            
+                            <p:outputLabel id="name" value="Name: #{documentTypeController.documentType.name}"/>
+                            <p:outputLabel id="location" value="Model location: #{documentTypeController.documentType.modelLocation}"/>
+                            <p:outputLabel id="description" value="Short description: #{documentTypeController.documentType.shortDescription}"/>
+                            <p:outputLabel value="Descriptors:"/>
+                            <p:repeat value="#{documentTypeController.descriptorList}" var="desc">
+                                <li> <h:outputText value="#{desc.descriptorName}" /></li>
+                            </p:repeat>
+                            <h:commandButton id="editDocTypeButton" value="Edit" action="#{documentTypeController.edit()}" />
+                            <h:commandButton id="deleteDocTypeButton" value="Delete" action="#{documentTypeController.delete()}" />
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

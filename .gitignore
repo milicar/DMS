@@ -1,6 +1,11 @@
+# idea files
 .idea/
 *.iml
 /target/
 
 # .mvn as well?
 .mvn
+
+# had to switch to NetBeans 
+nbactions.xml
+/nb-configuration.xml

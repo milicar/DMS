@@ -1,7 +1,9 @@
 package com.mr.service.impl;
 
 import com.mr.dao.DocumentTypeDAO;
+import com.mr.dao.DocumentTypeDescriptorDAO;
 import com.mr.domain.DocumentType;
+import com.mr.domain.DocumentTypeDescriptor;
 import com.mr.service.DocumentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     @Autowired
     DocumentTypeDAO documentTypeDAO;
+    
+    @Autowired
+    DocumentTypeDescriptorDAO documentTypeDescriptorDAO;
 
     @Override
     public List<DocumentType> findAll() {
@@ -30,7 +35,33 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public void delete(Long id) {
-        documentTypeDAO.deleteById(id);
+    public void delete(DocumentType documentType) {
+        documentTypeDAO.deleteById(documentType.getDocumentTypeID());
     }
+
+    @Override
+    public DocumentType addDescriptor(DocumentTypeDescriptor descriptor, DocumentType documentType) {
+        documentTypeDescriptorDAO.save(descriptor);
+        return documentType;
+    }
+
+    @Override
+    public DocumentType addDescriptor(String descriptor, DocumentType documentType) {
+        DocumentTypeDescriptor newDescriptor = new DocumentTypeDescriptor();
+        newDescriptor.setDescriptorName(descriptor);
+        newDescriptor.setDocumentType(documentType);
+        documentTypeDescriptorDAO.save(newDescriptor);
+        return documentType;
+    }
+    
+    
+
+    @Override
+    public DocumentType removeDescriptor(DocumentTypeDescriptor descriptor, DocumentType documentType) {
+        documentTypeDescriptorDAO.delete(descriptor);
+        return documentType;
+    }
+    
+    
+    
 }
