@@ -2,7 +2,8 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
     <h:head>
@@ -12,18 +13,27 @@
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
                 <h:form id="documentTypeDetails">
+                    <c:set var="docType" value="#{documentTypeController.documentType}"></c:set>
                     <p:panel header="Document Type">
                         <h:panelGrid columns="1">
-                            
-                            <p:outputLabel id="name" value="Name: #{documentTypeController.documentType.name}"/>
-                            <p:outputLabel id="location" value="Model location: #{documentTypeController.documentType.modelLocation}"/>
-                            <p:outputLabel id="description" value="Short description: #{documentTypeController.documentType.shortDescription}"/>
+
+                            <p:outputLabel id="name" value="Name: #{docType.name}"/>
+                            <p:outputLabel id="location" value="Model location: #{docType.modelLocation}"/>
+                            <p:outputLabel id="description" value="Short description: #{docType.shortDescription}"/>
                             <p:outputLabel value="Descriptors:"/>
                             <p:repeat value="#{documentTypeController.descriptorList}" var="desc">
                                 <li> <h:outputText value="#{desc.descriptorName}" /></li>
                             </p:repeat>
-                            <h:commandButton id="editDocTypeButton" value="Edit" action="#{documentTypeController.edit()}" />
-                            <h:commandButton id="deleteDocTypeButton" value="Delete" action="#{documentTypeController.delete()}" />
+                            <p:panelGrid columns="4">
+
+                                <p:outputLabel value="#{docType}"></p:outputLabel>
+                                <p:commandButton id="editDocTypeButton" value="Edit" action="#{documentTypeController.edit(docType)}" />
+
+                                <h:commandButton id="deleteDocTypeButton" value="Delete" action="#{documentTypeController.delete(docType)}" />
+
+                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>
+                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>
+                            </p:panelGrid>
                         </h:panelGrid>
                     </p:panel>
                 </h:form> 

@@ -41,7 +41,7 @@ public class DocumentTypeDescriptorServiceImpl implements DocumentTypeDescriptor
 //                .forEach((oldDescriptor) -> {
 //                    documentTypeDescriptorDAO.delete(oldDescriptor);
 //                });
-        documentTypeDescriptorDAO.deleteAll();
+        documentTypeDescriptorDAO.deleteAll(findAllForDocType(documentType));
         return documentTypeDescriptorDAO.saveAll(newDescriptorList);
     }
 

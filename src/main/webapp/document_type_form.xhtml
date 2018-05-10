@@ -16,7 +16,7 @@
                     <p:panel header="Document Type">
                         <h:panelGrid columns="1">
 
-                            <p:outputLabel rendered="false" value="ID: #{documentTypeController.documentType.documentTypeID}"/>
+                            <p:outputLabel  value="ID: #{documentTypeController.documentType.documentTypeID}"/>
                             <p:outputLabel for="name" value="Name: " />
                             <p:inputText id="name" value="#{documentTypeController.documentType.name}"
                                          required="true" requiredMessage="Document type name is not valid."/>
@@ -29,10 +29,6 @@
                             <p:outputLabel for="description" value="Short description: "/>
                             <p:inputText id="description" value="#{documentTypeController.documentType.shortDescription}"/>
                             <p:outputLabel value="Descriptors: "/>
-
-                            
-
-
 
                             <p:repeat var="descriptor" value="#{documentTypeController.descriptorList}">
 

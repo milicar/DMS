@@ -16,12 +16,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="document_type_descriptor")
-public class DocumentTypeDescriptor implements Serializable{
+public class DocumentTypeDescriptor implements Serializable, Comparable<DocumentTypeDescriptor>{
     
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="doctype_descriptor_id")
     private Long descriptorID;
-    @Column(name="doctype_name")
+    @Column(name="doctype_descriptor_name")
     private String descriptorName;
     @ManyToOne
     @JoinColumn(name="doctype_id")
@@ -89,6 +89,11 @@ public class DocumentTypeDescriptor implements Serializable{
     @Override
     public String toString() {
         return "DocumentTypeDescriptor{" + "descriptorID=" + descriptorID + ", descriptorName=" + descriptorName + '}';
+    }
+
+    @Override
+    public int compareTo(DocumentTypeDescriptor that) {
+        return this.getDescriptorID().compareTo(that.getDescriptorID());
     }
     
     

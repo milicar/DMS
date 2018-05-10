@@ -4,50 +4,50 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Document Types</title>
+        <title>Documents</title>
     </h:head>
     <h:body>
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
-                
-                <h:form id="documentTypesList">
-                    <p:panel header="Document Types List">
-                        <h:commandButton id="addDocumentTypeButton" action="#{documentTypeController.createNew()}" value="Add document type"/>
-                        <p:dataTable id="table" var="docType" value="#{documentTypeController.documentTypeList}">
+
+                <h:form id="documentList">
+                    <p:panel header="Documents of type #{documentController.documentType.name}">
+                        <h:commandButton id="addDocumentButton" action="#{documentController.createNew()}" value="Add document type"/>
+                        <p:dataTable id="table" var="document" value="#{documentController.documentList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{docType.documentTypeID}" />
+                                <h:outputText value="#{document.documentID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{documentTypeController.show(docType)}">
-                                    <h:outputText value="#{docType.name}" style="color: red"/>
+                                <h:commandLink action="#{documentController.show(document)}">
+                                    <h:outputText value="#{document.documentName}" style="color: red"/>
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Location">
-                                <h:outputText value="#{docType.modelLocation}" />
+                                <h:outputText value="#{document.documentLocation}" />
                             </p:column>
 
-                            <p:column headerText="Short Description">
-                                <h:outputText value="#{docType.shortDescription}" />
+                            <p:column headerText="Author">
+                                <h:outputText value="#{document.author}" />
                             </p:column>
 
                             <p:column headerText="Delete">
                                 <h:commandButton id="deleteOneDocTypeButton"
-                                                 action="#{documentTypeController.delete(docType)}"
+                                                 action="#{documentController.delete(document)}"
                                                  value="Delete" />
                             </p:column>
 
                             <p:column headerText="Edit">
                                 <h:commandButton id="editOneDocTypeButton"
-                                                 action="#{documentTypeController.edit(docType)}"
+                                                 action="#{documentController.edit(document)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>
                 </h:form>
-                
+
             </ui:define>
         </ui:composition>
     </h:body>

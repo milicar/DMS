@@ -22,9 +22,12 @@ public class DocumentType implements Serializable {
     @Lob
     @Column(name = "short_description")
     private String shortDescription;
-    
+
     @OneToMany(mappedBy = "documentType", fetch=FetchType.EAGER)
     private List<DocumentTypeDescriptor> documentTypeDescriptors;
+    
+    @OneToMany(mappedBy = "documentType")
+    private List<ActivityDocumentType> activityList;
 
     
     public DocumentType() {
@@ -70,6 +73,15 @@ public class DocumentType implements Serializable {
         this.documentTypeDescriptors = documentTypeDescriptors;
     }
 
+    public List<ActivityDocumentType> getActivityList() {
+        return activityList;
+    }
+
+    public void setActivityList(List<ActivityDocumentType> activityList) {
+        this.activityList = activityList;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;

@@ -1,0 +1,37 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+        <title>View Document</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="documentDetails">
+                    <p:panel header="Document">
+                        <h:panelGrid columns="1">
+
+                            <p:outputLabel id="name" value="Name: #{documentController.document.documentName}"/>
+                            <p:outputLabel id="location" value="Location: #{documentController.document.documentLocation}"/>
+                            <p:outputLabel id="description" value="Author: #{documentController.document.author}"/>
+                            <p:outputLabel value="Descriptors:"/>
+<!--                            <p:repeat value="#{documentTypeController.descriptorList}" var="desc">
+                                <li> <h:outputText value="#{desc.descriptorName}" /></li>
+                            </p:repeat>-->
+                            <p:panelGrid columns="2">
+                                <h:commandButton id="editDocButton" value="Edit" action="#{documentController.editThis()}" />
+                                <h:commandButton id="deleteDocButton" value="Delete" action="#{documentController.deleteThis()}" />
+<!--                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>
+                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>-->
+                            </p:panelGrid>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

@@ -6,14 +6,14 @@ import com.mr.service.DocumentTypeDescriptorService;
 import com.mr.service.DocumentTypeService;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-@Component
-@ManagedBean(name = "documentTypeController")
+@Controller
+@Scope("request")
+//@ManagedBean(name = "documentTypeController")
 public class DocumentTypeController {
     
     @Autowired
@@ -49,6 +49,12 @@ public class DocumentTypeController {
         this.documentTypeList = documentTypeList;
     }
     
+    public String createNew(){
+        documentType = new DocumentType();
+        descriptorList = new ArrayList<>();
+        return "document_type_form";
+    }
+    
     public String show(DocumentType documentType) {
         this.documentType = documentType;
         this.descriptorList = findAllForDocType(documentType);
@@ -68,19 +74,20 @@ public class DocumentTypeController {
         return "list_document_types";
     }
     
-    public String delete() {
-        documentTypeService.delete(this.getDocumentType());
-        return "list_document_types";
-    }
+//    public String delete() {
+//        documentTypeService.delete(this.getDocumentType());
+//        return "list_document_types";
+//    }
     
     public String edit(DocumentType documentType) {
-        this.documentType = documentType;
+        setDocumentType(documentType);
+        setDescriptorList(documentType.getDocumentTypeDescriptors());
         return "document_type_form";
     }
     
-    public String edit() {
-        return "document_type_form";
-    }
+//    public String edit() {
+//        return "document_type_form";
+//    }
 
     /* descriptors */
     public DocumentTypeDescriptor getDescriptor() {
