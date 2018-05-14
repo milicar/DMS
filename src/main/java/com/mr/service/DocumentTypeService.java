@@ -1,6 +1,7 @@
 package com.mr.service;
 
 import com.mr.domain.Activity;
+import com.mr.domain.ActivityDocumentType;
 import com.mr.domain.DocumentType;
 import com.mr.domain.DocumentTypeDescriptor;
 
@@ -11,6 +12,12 @@ public interface DocumentTypeService {
     List<DocumentType> findAll();
     
     DocumentType findById(Long id);
+    
+    List<DocumentType> findAllDocTypesFor(Activity activity);
+
+    List<DocumentType> findAllDocTypesFor(Activity activity, ActivityDocumentType.Direction direction);
+
+    public DocumentType loadDocumentType(DocumentType documentType);
 
     DocumentType save(DocumentType documentType);
 

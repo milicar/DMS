@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -19,6 +21,7 @@ public class Company implements Serializable{
     private String companyName;
     @Column(name = "company_address")
     private String companyAddress;
+    @Lob
     @Column(name = "company_description")
     private String companyDescription;
     
@@ -26,6 +29,7 @@ public class Company implements Serializable{
     private List<FirstLevelProcess> processList;
     
     @OneToMany
+    @JoinColumn(name = "company_id")
     private List<Contact> contactList;
 
     public Company() {

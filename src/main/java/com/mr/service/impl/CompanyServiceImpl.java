@@ -19,6 +19,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Company findById(Long id) {
+        return companyDAO.getOne(id);
+    }
+
+    @Override
     public Company save(Company company) {
         return companyDAO.save(company);
     }

@@ -3,6 +3,7 @@ package com.mr.domain;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -26,6 +28,9 @@ public class DocumentTypeDescriptor implements Serializable, Comparable<Document
     @ManyToOne
     @JoinColumn(name="doctype_id")
     private DocumentType documentType;
+    @OneToMany(mappedBy = "documentTypeDescriptor")
+    private List<DocumentDescriptor> documentDescriptorList;
+
 
     public DocumentTypeDescriptor() {
     }
@@ -54,6 +59,14 @@ public class DocumentTypeDescriptor implements Serializable, Comparable<Document
         this.documentType = documentType;
     }
 
+    public List<DocumentDescriptor> getDocumentDescriptorList() {
+        return documentDescriptorList;
+    }
+
+    public void setDocumentDescriptorList(List<DocumentDescriptor> documentDescriptorList) {
+        this.documentDescriptorList = documentDescriptorList;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

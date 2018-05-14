@@ -25,6 +25,9 @@
                     width: 78%;
                     display: inline-block;
                 }
+                .top {
+                    text-align: right;
+                }
             </style>
         </h:head>
         <h:body>
@@ -32,16 +35,27 @@
                     <p:growl for="errors" showDetail="true"/>
                 </div>
                 <div class="top content">
-                    <ui:insert name="top">Top nav</ui:insert>
+                    <ui:insert name="top">
+                        <p:panel>
+                            <p:outputLabel value="Logged in user name" />
+                            <p:commandButton value="Log out"/>
+                        </p:panel>
+                    </ui:insert>
                 </div>
                 <div class="left content">
-                    <ui:insert name="left">Left tree</ui:insert>
-<!--                    <p:toolbar>
+                    <ui:insert name="left">
+                    <p:toolbar>
                         <f:facet name="left">
-                            <p:button href="/" value="List of Products" />
-                            <p:button href="/product" value="New Product" />
+                            <p:button href="list_companies.xhtml" value="Companies" /><br/>
+                            <p:commandButton action="#{processController.showAll()}" value="Processes" /><br/>
+                            <p:button href="list_activities.xhtml" value="Activities" /><br/>
+                            <p:button href="list_document_types.xhtml" value="Document Types" /><br/>
+                            <p:commandButton action="#{documentController.showAll()}" value="Documents" /><br/>
+                            <p:button href="list_contacts.xhtml" value="Contacts" />
+                            <p:button href="list_users.xhtml" value="Users" />
                         </f:facet>
-                    </p:toolbar>-->
+                    </p:toolbar>
+                    </ui:insert>
                 </div>
                 <div class="default content">
                     <ui:insert name="content">Default content</ui:insert>

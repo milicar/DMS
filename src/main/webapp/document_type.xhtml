@@ -17,24 +17,24 @@
                     <p:panel header="Document Type">
                         <h:panelGrid columns="1">
 
-                            <p:outputLabel id="name" value="Name: #{docType.name}"/>
-                            <p:outputLabel id="location" value="Model location: #{docType.modelLocation}"/>
-                            <p:outputLabel id="description" value="Short description: #{docType.shortDescription}"/>
+                            <p:outputLabel id="name" value="Name: #{documentTypeController.documentType.name}"/>
+                            <p:outputLabel id="location" value="Model location: #{documentTypeController.documentType.modelLocation}"/>
+                            <p:outputLabel id="description" value="Short description: #{documentTypeController.documentType.shortDescription}"/>
                             <p:outputLabel value="Descriptors:"/>
                             <p:repeat value="#{documentTypeController.descriptorList}" var="desc">
                                 <li> <h:outputText value="#{desc.descriptorName}" /></li>
                             </p:repeat>
                             <p:panelGrid columns="4">
-
-                                <p:outputLabel value="#{docType}"></p:outputLabel>
-                                <p:commandButton id="editDocTypeButton" value="Edit" action="#{documentTypeController.edit(docType)}" />
+                                <h:commandButton id="editDocTypeButton" value="Edit" action="#{documentTypeController.edit(docType)}" />
 
                                 <h:commandButton id="deleteDocTypeButton" value="Delete" action="#{documentTypeController.delete(docType)}" />
 
-                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>
-                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>
+                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(docType)}"/>
+                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(docType)}"/>
                             </p:panelGrid>
                         </h:panelGrid>
+                        <p:outputLabel rendered="true" value="holding document type: #{documentTypeController.documentType}"></p:outputLabel>
+
                     </p:panel>
                 </h:form> 
             </ui:define>

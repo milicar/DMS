@@ -1,0 +1,63 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Contacts</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+
+                <h:form id="documentTypesList">
+                    <p:panel header="Contact List">
+                        <h:commandButton id="addContactButton" action="#{contactController.createNew()}" value="Add contact"/>
+                        <p:dataTable id="table" var="contact" value="#{contactController.contactList}">
+
+                            <p:column headerText="# ID">
+                                <h:outputText value="#{contact.contactID}" />
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <h:commandLink action="#{contactController.show(contact)}">
+                                    <h:outputText value="#{contact.contactName}" style="color: red"/>
+                                </h:commandLink>
+                            </p:column>
+
+                            <p:column headerText="Information">
+                                <h:outputText value="#{contact.contactInfo}" />
+                            </p:column>
+
+                            <p:column headerText="Address">
+                                <h:outputText value="#{contact.contactAddress}" />
+                            </p:column>
+                            
+                            <p:column headerText="Email">
+                                <h:outputText value="#{contact.contactEmail}" />
+                            </p:column>
+
+                            <p:column headerText="Delete">
+                                <h:commandButton id="deleteOneContactButton"
+                                                 action="#{contactController.delete(contact)}"
+                                                 value="Delete" />
+                            </p:column>
+
+                            <p:column headerText="Edit">
+                                <h:commandButton id="editOneContactButton"
+                                                 action="#{contactController.edit(contact)}"
+                                                 value="Edit" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</f:view>
+
+
+
+

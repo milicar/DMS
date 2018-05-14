@@ -62,11 +62,11 @@ public class User implements Serializable{
         this.lastName = lastName;
     }
 
-    public Company getCompanyID() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompanyID(Company company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
@@ -100,6 +100,11 @@ public class User implements Serializable{
 
     public void setUserRole(Role userRole) {
         this.userRole = userRole;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", company=" + company + ", username=" + username + ", password=" + password + ", email=" + email + ", userRole=" + userRole + '}';
     }
 
     

@@ -1,5 +1,6 @@
 package com.mr.domain;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "activity_document_type")
 @IdClass(ActivityDocTypeId.class)
-public class ActivityDocumentType {
+public class ActivityDocumentType implements Serializable{
 
     @Id
     @ManyToOne

@@ -5,10 +5,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "first_level_process")
 @DiscriminatorValue("first")
 public class FirstLevelProcess extends Process implements Serializable{
 

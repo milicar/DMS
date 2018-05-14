@@ -1,18 +1,15 @@
 package com.mr.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -34,14 +31,12 @@ public class Document implements Serializable{
     
     @OneToMany(mappedBy = "document")
     private List<DocumentTag> tagList;
-    
-    @ElementCollection
-    @CollectionTable(name = "document_descriptor")
-    @MapKeyJoinColumn(name = "descriptor_id")
-    @Column(name = "descriptor_value")
-    private Map<DocumentTypeDescriptor, String> documentDescriptorMap;
+    @OneToMany(mappedBy = "document")
+    private List<DocumentDescriptor> documentDescriptorList;
 
     public Document() {
+        tagList = new ArrayList<>();
+        documentDescriptorList = new ArrayList<>();
     }
 
     public Long getDocumentID() {
@@ -92,14 +87,20 @@ public class Document implements Serializable{
         this.tagList = tagList;
     }
 
-    public Map<DocumentTypeDescriptor, String> getDocumentDescriptorMap() {
-        return documentDescriptorMap;
+    public List<DocumentDescriptor> getDocumentDescriptorList() {
+        return documentDescriptorList;
     }
 
-    public void setDocumentDescriptorMap(Map<DocumentTypeDescriptor, String> documentDescriptorMap) {
-        this.documentDescriptorMap = documentDescriptorMap;
+    public void setDocumentDescriptorList(List<DocumentDescriptor> documentDescriptorList) {
+        this.documentDescriptorList = documentDescriptorList;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Document{" + "documentID=" + documentID + ", documentLocation=" + documentLocation + ", documentName=" + documentName + ", author=" + author + ", documentType=" + documentType + ", tagList=" + tagList + ", documentDescriptorList=" + documentDescriptorList + '}';
+    }
+
+
+        
     
 }

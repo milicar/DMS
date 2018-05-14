@@ -12,7 +12,8 @@
 
                 <h:form id="documentList">
                     <p:panel header="Documents of type #{documentController.documentType.name}">
-                        <h:commandButton id="addDocumentButton" action="#{documentController.createNew()}" value="Add document type"/>
+                        <h:commandButton id="addDocumentButton" action="#{documentController.createNew()}" 
+                                         value="Add document"/>
                         <p:dataTable id="table" var="document" value="#{documentController.documentList}">
 
                             <p:column headerText="# ID">
@@ -30,7 +31,7 @@
                             </p:column>
 
                             <p:column headerText="Author">
-                                <h:outputText value="#{document.author}" />
+                                <h:outputText value="#{document.author.firstName} #{document.author.lastName}" />
                             </p:column>
 
                             <p:column headerText="Delete">

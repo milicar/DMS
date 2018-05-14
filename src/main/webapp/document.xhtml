@@ -2,7 +2,8 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
     <h:head>
@@ -12,21 +13,37 @@
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
                 <h:form id="documentDetails">
+                    <c:set var="doc" value="#{documentController.document}"></c:set>
+
                     <p:panel header="Document">
                         <h:panelGrid columns="1">
-
+                            
                             <p:outputLabel id="name" value="Name: #{documentController.document.documentName}"/>
                             <p:outputLabel id="location" value="Location: #{documentController.document.documentLocation}"/>
-                            <p:outputLabel id="description" value="Author: #{documentController.document.author}"/>
+                            <p:outputLabel id="description" value="Author: #{documentController.document.author.firstName}"/>
+                            <p:outputLabel id="type" value="Document type: #{documentController.document.documentType.name}"/>
+
+                            <p:outputLabel value="Tags:"/>
+                            <p:repeat value="#{documentController.document.tagList}" var="tag">
+                                <li> <h:outputText value="#{tag.tagValue}" /></li>
+                            </p:repeat>
+                            
                             <p:outputLabel value="Descriptors:"/>
-<!--                            <p:repeat value="#{documentTypeController.descriptorList}" var="desc">
-                                <li> <h:outputText value="#{desc.descriptorName}" /></li>
-                            </p:repeat>-->
+                            <p:repeat value="#{documentController.document.documentDescriptorList}" var="desc">
+                                <li> <h:outputText 
+                                        value="#{desc.documentTypeDescriptor.descriptorName} : #{desc.descriptorValue}" /></li>
+                            </p:repeat>
                             <p:panelGrid columns="2">
-                                <h:commandButton id="editDocButton" value="Edit" action="#{documentController.editThis()}" />
+                                <h:commandButton id="editDocButton" value="Edit" action="#{documentController.edit(doc)}" />
                                 <h:commandButton id="deleteDocButton" value="Delete" action="#{documentController.deleteThis()}" />
-<!--                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>
-                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>-->
+                            <p:outputLabel id="type2" value="Document type: #{documentController.document.documentType.name}"/>
+
+<!--                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>-->
+                                <p:outputLabel value="#{documentController.document}"/>
+                                <p:outputLabel value="#{doc.documentName}"/>
+                                <p:outputLabel value="#{documentController.document.documentType}"/>
+                                <p:outputLabel value="#{documentController.documentType}"/>
+<!--                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>-->
                             </p:panelGrid>
                         </h:panelGrid>
                     </p:panel>

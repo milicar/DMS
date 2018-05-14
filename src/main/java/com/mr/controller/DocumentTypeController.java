@@ -27,7 +27,10 @@ public class DocumentTypeController {
     private List<DocumentTypeDescriptor> descriptorList;
 
     public DocumentTypeController() {
-        
+
+        documentType = new DocumentType();
+        descriptor = new DocumentTypeDescriptor();
+        descriptorList = new ArrayList<>();
     }
     
     
@@ -56,8 +59,9 @@ public class DocumentTypeController {
     }
     
     public String show(DocumentType documentType) {
-        this.documentType = documentType;
-        this.descriptorList = findAllForDocType(documentType);
+   //     setDocumentType(documentTypeService.loadDocumentType(documentType));
+        setDocumentType(documentType);
+        setDescriptorList(findAllForDocType(documentType));
         return "document_type";
     }
     
@@ -130,8 +134,6 @@ public class DocumentTypeController {
     public void init() {
        // documentType = new DocumentType();
     documentTypeList  = documentTypeService.findAll();
-    documentType  = new DocumentType();
-    descriptor  = new DocumentTypeDescriptor();
-    descriptorList  = new ArrayList<>();
+    
     }
 }

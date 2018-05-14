@@ -24,9 +24,9 @@ public abstract class Process implements Serializable{
     private String processName;
     @Column(name = "process_description")
     private String processDescription;
-    @Column
-    private boolean primitive;
-    
+//    @Column
+//    private boolean primitive;
+//    
     @OneToMany(mappedBy = "parent")
     private List<Subprocess> subprocessList;
     @OneToMany(mappedBy = "parent")
@@ -60,12 +60,16 @@ public abstract class Process implements Serializable{
     }
 
     public boolean isPrimitive() {
-        return primitive;
+        return !(getActivityList().isEmpty());
+    }
+    
+    public boolean isComplex(){
+        return !(getSubprocessList().isEmpty());
     }
 
-    public void setPrimitive(boolean primitive) {
-        this.primitive = primitive;
-    }
+//    public void setPrimitive(boolean primitive) {
+//        this.primitive = primitive;
+//    }
 
     public List<Subprocess> getSubprocessList() {
         return subprocessList;

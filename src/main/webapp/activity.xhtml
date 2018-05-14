@@ -1,0 +1,44 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View Activity</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="activityDetails">
+                    <c:set var="activity" value="#{activityController.activity}"></c:set>
+
+                    <p:panel header="Activity">
+                        <h:panelGrid columns="1">
+
+                            <p:outputLabel id="id" value="Id: #{activityController.activity.activityID}"/>
+                            <p:outputLabel id="name" value="Name: #{activityController.activity.activityName}"/>
+
+                            <p:outputLabel value="IN document types"/>
+                            <p:repeat value="#{activityController.inDocumentTypeList}" var="ins">
+                                <li> <h:outputText value="#{ins.name}" /></li>
+                            </p:repeat>
+
+                            <p:outputLabel value="OUT document types"/>
+                            <p:repeat value="#{activityController.outDocumentTypeList}" var="outs">
+                                <li> <h:outputText value="#{outs.name}" /></li>
+                            </p:repeat>
+                            <p:panelGrid columns="2">
+                                <h:commandButton id="editActivityButton" value="Edit"  />
+                                <h:commandButton id="deleteActivityButton" value="Delete"  />
+
+                            </p:panelGrid>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

@@ -2,8 +2,6 @@ package com.mr.service.impl;
 
 import com.mr.dao.ActivityDAO;
 import com.mr.domain.Activity;
-import com.mr.domain.ActivityDocumentType;
-import com.mr.domain.DocumentType;
 import com.mr.domain.Process;
 import com.mr.service.ActivityDocTypeService;
 import com.mr.service.ActivityService;
@@ -30,16 +28,6 @@ public class ActivityServiceImpl implements ActivityService {
         Activity activity = new Activity();
         activity.setParent(parentProcess);
         return activityDAO.findAll(Example.of(activity));
-    }
-
-    @Override
-    public List<DocumentType> findAllDocTypes(Activity activity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<DocumentType> findAllDocTypes(Activity activity, ActivityDocumentType.Direction direction) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

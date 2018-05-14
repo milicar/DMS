@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class Contact implements Serializable{
@@ -15,6 +16,7 @@ public class Contact implements Serializable{
     private Long contactID;
     @Column(name = "contact_name")
     private String contactName;
+    @Lob
     @Column(name = "contact_info")
     private String contactInfo;
     @Column(name = "contact_address")
