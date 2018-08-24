@@ -43,7 +43,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
     
     @Override
-    public List<DocumentType> findAllDocTypesFor(Activity activity) {
+    public List<DocumentType> findAllFor(Activity activity) {
         List<ActivityDocumentType> adtList = activityDocTypeService.findAllFor(activity);
         List<DocumentType> docTypes = new ArrayList<>();
         adtList.forEach((adt) -> {
@@ -53,7 +53,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public List<DocumentType> findAllDocTypesFor(Activity activity, ActivityDocumentType.Direction direction) {
+    public List<DocumentType> findAllFor(Activity activity, ActivityDocumentType.Direction direction) {
         List<ActivityDocumentType> adtList = activityDocTypeService.findAllFor(activity, direction);
         List<DocumentType> docTypes = new ArrayList<>();
         adtList.forEach((adt) -> {

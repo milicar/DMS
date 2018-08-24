@@ -13,9 +13,9 @@ public interface DocumentTypeService {
     
     DocumentType findById(Long id);
     
-    List<DocumentType> findAllDocTypesFor(Activity activity);
+    List<DocumentType> findAllFor(Activity activity);
 
-    List<DocumentType> findAllDocTypesFor(Activity activity, ActivityDocumentType.Direction direction);
+    List<DocumentType> findAllFor(Activity activity, ActivityDocumentType.Direction direction);
 
     public DocumentType loadDocumentType(DocumentType documentType);
 

@@ -305,7 +305,9 @@ insert into `user`(`user_id`,`first_name`,`last_name`,`company_id`,`username`,`p
 (1,'Jane','Brown',1,'janebrown','silly','jbrown@company1.com','ADMIN'),
 (2,'Mary','White',1,'marywhite','funny','marywhite@company1.com','USER'),
 (3,'Alice','Gray',2,'alicegray','code','alicegray@company2.com','ADMIN'),
-(4,'Sarah','Blue',3,'sarahblue','word','sarahblue@company3.com','USER');
+(4,'Sarah','Blue',3,'sarahblue','word','sarahblue@company3.com','USER'),
+(5,'User','User',2,'user','user','user@company2.com','USER'),
+(6,'Admin','Admin',3,'admin','admin','admin@company3.com','ADMIN');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

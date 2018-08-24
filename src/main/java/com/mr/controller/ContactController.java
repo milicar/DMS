@@ -5,15 +5,16 @@ import com.mr.service.ContactService;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.annotation.SessionScope;
 
+@SessionScope
 @Controller
-@Scope("request")
 public class ContactController {
 
     @Autowired
     private ContactService contactService;
+    
     private List<Contact> contactList;
     private Contact contact;
 
@@ -32,22 +33,36 @@ public class ContactController {
     public void setContactList(List<Contact> contactList) {
         this.contactList = contactList;
     }
+    
+    public String showAll(){
+        setContactList(contactService.findAll());
+        return "list_contacts";
+    }
 
     public String createNew() {
-        return "";
+        setContact(new Contact());
+        return "contact_form";
     }
 
     public String show(Contact contact) {
-        return "";
+        setContact(contact);
+        return "contact";
     }
 
     public String edit(Contact contact){
-        return "";
+        setContact(contact);
+        return "contact_form";
+    }
+    
+    public String save(){
+        contactService.save(contact);
+        setContactList(contactService.findAll());
+        return "list_contacts";
     }
     
     public String delete(Contact contact){
         contactService.delete(contact);
-        contactList = contactService.findAll();
+        setContactList(contactService.findAll());
         return "list_contacts";
     }
 

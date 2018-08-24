@@ -11,8 +11,11 @@
             <ui:define name="content">
                 
                 <h:form id="documentTypesList">
-                    <p:panel header="Document Types List">
-                        <h:commandButton id="addDocumentTypeButton" action="#{documentTypeController.createNew()}" value="Add document type"/>
+                    <p:panel header="#{documentTypeController.direction} Document Types for activity: #{documentTypeController.activity.activityName}">
+                        <!--TODO create new FOR-->
+                        <h:commandButton id="addDocumentTypeButton" rendered="#{loginController.admin}"
+                                         action="#{documentTypeController.createNewForThis()}" 
+                                         value="Add document type"/>
                         <p:dataTable id="table" var="docType" value="#{documentTypeController.documentTypeList}">
 
                             <p:column headerText="# ID">
@@ -20,8 +23,8 @@
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{documentTypeController.show(docType)}">
-                                    <h:outputText value="#{docType.name}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{documentTypeController.show(docType)}">
+                                    <h:outputText value="#{docType.name}" />
                                 </h:commandLink>
                             </p:column>
 
@@ -33,14 +36,12 @@
                                 <h:outputText value="#{docType.shortDescription}" />
                             </p:column>
 
-                            <p:column headerText="Delete">
-                                <h:commandButton id="deleteOneDocTypeButton"
+                            <p:column headerText="Action" rendered="#{loginController.admin}">
+                                <h:commandButton id="deleteOneDocTypeButton" rendered="#{loginController.admin}" 
                                                  action="#{documentTypeController.delete(docType)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
-                                <h:commandButton id="editOneDocTypeButton"
+                           
+                                <h:commandButton id="editOneDocTypeButton" rendered="#{loginController.admin}"
                                                  action="#{documentTypeController.edit(docType)}"
                                                  value="Edit" />
                             </p:column>

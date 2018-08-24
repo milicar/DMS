@@ -1,0 +1,75 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View First Level Process</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="flProcessDetails">
+                    <c:set var="proc" value="#{flProcessController.flProcess}"></c:set>
+
+                    <p:panel header="Process: #{flProcessController.flProcess.processName} for company: #{flProcessController.parentCompany.companyName}">
+                        <p:panelGrid columns="2">
+
+                            <h:panelGrid columns="1">
+                                <p:outputLabel id="id" value="Id: #{flProcessController.flProcess.processID}"/>
+                                <p:outputLabel id="name" value="Name: #{flProcessController.flProcess.processName}"/>
+                                <p:outputLabel id="description" value="Description: #{flProcessController.flProcess.processDescription}"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editFlProcessButton" rendered="#{loginController.admin}" value="Edit Process" action="#{flProcessController.edit(proc)}" />
+                                <h:commandButton id="deleteFlProcessButton" rendered="#{loginController.admin}" value="Delete Process" action="#{flProcessController.delete(proc)}" /> 
+                            </h:panelGrid>
+
+                        </p:panelGrid>
+
+                        <c:choose>
+                            <c:when test="#{flProcessController.activityChildren.size() > 0}">
+                                <h:panelGrid columns="2">
+                                    <h:column>
+                                        Activities:
+                                        <p:repeat value="#{flProcessController.activityChildren}" var="actchild">
+                                            <li><p:outputLabel value="#{actchild.activityName}"/></li>
+                                        </p:repeat>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandButton value="View all activities" action="#{activityController.showAllFor(proc)}"/><br/>
+                                        <h:commandButton value="Add new activity" rendered="#{loginController.admin}" action="#{activityController.createNewFor(proc)}"/>
+                                    </h:column>
+                                </h:panelGrid>
+                            </c:when>
+
+                            <c:when test="#{flProcessController.processChildren.size() > 0}">
+                                <h:panelGrid columns="2">
+                                    <h:column>
+                                        Subprocesses:
+                                        <p:repeat value="#{flProcessController.processChildren}" var="procchild">
+                                            <li><p:outputLabel value="#{procchild.processName}"/></li>
+                                        </p:repeat>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandButton value="View all subprocesses" action="#{subprocessController.showAllFor(proc)}"/><br/>
+                                        <h:commandButton value="Add new subprocess" rendered="#{loginController.admin}" action="#{subprocessController.createNewFor(proc)}"/>
+                                    </h:column>
+                                </h:panelGrid>
+                            </c:when>
+                            <c:otherwise>
+                                <h:commandButton value="Add subprocess" action="#{subprocessController.createNewFor(proc)}"/><br/>
+                                <h:commandButton value="Add activity" rendered="#{loginController.admin}" action="#{activityController.createNewFor(proc)}"/>
+
+                            </c:otherwise>
+                        </c:choose>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

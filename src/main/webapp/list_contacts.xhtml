@@ -12,40 +12,40 @@
 
                 <h:form id="documentTypesList">
                     <p:panel header="Contact List">
-                        <h:commandButton id="addContactButton" action="#{contactController.createNew()}" value="Add contact"/>
-                        <p:dataTable id="table" var="contact" value="#{contactController.contactList}">
+                        <h:commandButton id="addContactButton" rendered="#{loginController.admin}"
+                                         action="#{contactController.createNew()}" 
+                                         value="Add contact"/>
+                        <p:dataTable id="table" var="cont" value="#{contactController.contactList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{contact.contactID}" />
+                                <h:outputText value="#{cont.contactID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{contactController.show(contact)}">
-                                    <h:outputText value="#{contact.contactName}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{contactController.show(cont)}">
+                                    <h:outputText value="#{cont.contactName}" />
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Information">
-                                <h:outputText value="#{contact.contactInfo}" />
+                                <h:outputText value="#{cont.contactInfo}" />
                             </p:column>
 
                             <p:column headerText="Address">
-                                <h:outputText value="#{contact.contactAddress}" />
+                                <h:outputText value="#{cont.contactAddress}" />
                             </p:column>
                             
                             <p:column headerText="Email">
-                                <h:outputText value="#{contact.contactEmail}" />
+                                <h:outputText value="#{cont.contactEmail}" />
                             </p:column>
 
-                            <p:column headerText="Delete">
+                            <p:column headerText="Action" rendered="#{loginController.admin}">
                                 <h:commandButton id="deleteOneContactButton"
-                                                 action="#{contactController.delete(contact)}"
+                                                 action="#{contactController.delete(cont)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
+                            
                                 <h:commandButton id="editOneContactButton"
-                                                 action="#{contactController.edit(contact)}"
+                                                 action="#{contactController.edit(cont)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

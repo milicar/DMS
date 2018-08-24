@@ -1,6 +1,7 @@
 package com.mr.service.impl;
 
 import com.mr.dao.ContactDAO;
+import com.mr.domain.Company;
 import com.mr.domain.Contact;
 import com.mr.service.CompanyService;
 import com.mr.service.ContactService;
@@ -14,11 +15,16 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     ContactDAO contactDAO;
     @Autowired
-    CompanyService companyService; 
+    CompanyService companyService;
 
     @Override
     public List<Contact> findAll() {
         return contactDAO.findAll();
+    }
+
+    @Override
+    public Contact findById(Long id) {
+        return contactDAO.getOne(id);
     }
 
     @Override

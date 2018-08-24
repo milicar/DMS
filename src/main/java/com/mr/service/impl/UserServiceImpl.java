@@ -5,6 +5,7 @@ import com.mr.domain.Company;
 import com.mr.domain.User;
 import com.mr.service.UserService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User user) {
         userDao.delete(user);
+    }
+    
+    @Override
+    public Optional<User> findByUsername(String username){
+        User user = new User();
+        user.setUsername(username);
+        return userDao.findOne(Example.of(user));
     }
 
 }

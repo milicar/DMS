@@ -10,7 +10,7 @@ public interface DocumentDescriptorService {
 
     List<DocumentDescriptor> findAll();
     
-    List<DocumentDescriptor> findAllForDocument(Document document);
+    List<DocumentDescriptor> findAllFor(Document document);
     
     DocumentDescriptor findById(Long id);
     

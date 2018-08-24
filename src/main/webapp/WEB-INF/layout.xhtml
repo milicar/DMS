@@ -28,6 +28,12 @@
                 .top {
                     text-align: right;
                 }
+                .ui-datatable table {
+                    table-layout: auto;
+                }
+                .viewOne {
+                    font-weight: bold;
+                }
             </style>
         </h:head>
         <h:body>
@@ -37,8 +43,8 @@
                 <div class="top content">
                     <ui:insert name="top">
                         <p:panel>
-                            <p:outputLabel value="Logged in user name" />
-                            <p:commandButton value="Log out"/>
+                            <p:outputLabel value="Welcome #{loginController.loggedInUser.username}" style="padding-right: 10px"/>
+                            <p:commandButton value="Log out" action="#{loginController.logout()}"/>
                         </p:panel>
                     </ui:insert>
                 </div>
@@ -46,13 +52,18 @@
                     <ui:insert name="left">
                     <p:toolbar>
                         <f:facet name="left">
-                            <p:button href="list_companies.xhtml" value="Companies" /><br/>
-                            <p:commandButton action="#{processController.showAll()}" value="Processes" /><br/>
-                            <p:button href="list_activities.xhtml" value="Activities" /><br/>
-                            <p:button href="list_document_types.xhtml" value="Document Types" /><br/>
-                            <p:commandButton action="#{documentController.showAll()}" value="Documents" /><br/>
-                            <p:button href="list_contacts.xhtml" value="Contacts" />
-                            <p:button href="list_users.xhtml" value="Users" />
+                            <p:commandButton action="#{companyController.showAll}" value="Companies" rendered="#{loginController.admin}"/><br/>
+                            <p:commandButton action="#{flProcessController.showAllFor(loginController.loggedInUser)}" value="Processes" /><br/>
+                            <p:commandButton action="#{activityController.showAllFor(loginController.loggedInUser)}" value="Activities" /><br/>
+                            <!--<p:button href="list_activities.xhtml" value="Activities" /><br/>-->
+                            <p:commandButton action="#{documentTypeController.showAllFor(loginController.loggedInUser)}" value="DocumentTypes" /><br/>
+                            <!--<p:button href="list_document_types.xhtml" value="Document Types" /><br/>-->
+                            <p:commandButton action="#{documentController.showAllFor(loginController.loggedInUser)}" value="Documents" /><br/>
+                            <p:commandButton action="#{contactController.showAll()}" value="Contacts" /><br/>
+                            <p:commandButton action="#{userController.showAll()}" value="Users" /><br/>
+                            <!--<p:button href="list_documents.xhtml" value="Documents" /><br/>-->
+                            <!--<p:button href="list_contacts.xhtml" value="Contacts" />-->
+                            <!--<p:button href="list_users.xhtml" value="Users" rendered="#{loginController.admin}"/>-->
                         </f:facet>
                     </p:toolbar>
                     </ui:insert>

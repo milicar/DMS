@@ -32,7 +32,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> findForDocType(DocumentType documentType) {
+    public List<Document> findAllFor(DocumentType documentType) {
         Document document = new Document();
         document.setDocumentType(documentType);
         Example<Document> example = Example.of(document);
@@ -89,9 +89,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<DocumentDescriptor> findDescriptorsFor(Document document) {
-        DocumentDescriptor dd = new DocumentDescriptor();
-        dd.setDocument(document);
-        return documentDescriptorService.findAllForDocument(document);
+//        DocumentDescriptor dd = new DocumentDescriptor();
+//        dd.setDocument(document);
+        return documentDescriptorService.findAllFor(document);
     }
 
     @Override
@@ -114,4 +114,7 @@ public class DocumentServiceImpl implements DocumentService {
         return document;
     }
 
+//    public List<DocumentDescriptor> updateDescriptors(List<DocumentDescriptor> newDescriptors, Document document){
+//        
+//    }
 }

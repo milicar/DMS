@@ -11,7 +11,7 @@ public interface DocumentService {
     
     List<Document> findAll();
     
-    List<Document> findForDocType(DocumentType documentType);
+    List<Document> findAllFor(DocumentType documentType);
     
     Document findById(Long id);
     

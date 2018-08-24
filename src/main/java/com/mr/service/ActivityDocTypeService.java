@@ -19,7 +19,8 @@ public interface ActivityDocTypeService {
     
     ActivityDocumentType save(ActivityDocumentType activityDocumentType);
     
+    ActivityDocumentType save(Activity activity, DocumentType documentType, ActivityDocumentType.Direction direction);
+    
     void delete(ActivityDocumentType activityDocumentType);
     
-
 }

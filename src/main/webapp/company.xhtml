@@ -1,0 +1,45 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View Company</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="companyDetails">
+                    <c:set var="comp" value="#{companyController.company}"></c:set>
+
+                    <p:panel header="Company">
+                        <h:panelGrid columns="2">
+
+                            <h:panelGrid columns="1">
+                            <p:outputLabel id="id" value="Id: #{companyController.company.companyID}"/>
+                            <p:outputLabel id="name" value="Name: #{companyController.company.companyName}"/>
+                            <p:outputLabel id="location" value="Description: #{companyController.company.companyDescription}"/>
+                            <p:outputLabel id="description" value="Address: #{companyController.company.companyAddress}"/>
+                            </h:panelGrid>                            
+                            
+                            <h:column>
+                                <h:panelGrid columns="2">
+                                    <h:commandButton id="editCompanyButton" rendered="#{loginController.admin}" value="Edit Company" action="#{companyController.edit(comp)}" />
+                                    <h:commandButton id="deleteCompanyButton" rendered="#{loginController.admin}" value="Delete Company" action="#{companyController.delete(comp)}" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="showAllProcesses" value="Company's Processes" action="#{flProcessController.showAllFor(comp)}" />
+
+                            </h:panelGrid>
+                            </h:column>
+                        </h:panelGrid>
+
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

@@ -13,29 +13,54 @@
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
                 <h:form id="activityDetails">
-                    <c:set var="activity" value="#{activityController.activity}"></c:set>
+                    <c:set var="act" value="#{activityController.activity}"></c:set>
 
-                    <p:panel header="Activity">
-                        <h:panelGrid columns="1">
+                    <p:panel header="Activity: #{activityController.activity.activityName} for process: #{activityController.parent.processName}">
 
-                            <p:outputLabel id="id" value="Id: #{activityController.activity.activityID}"/>
-                            <p:outputLabel id="name" value="Name: #{activityController.activity.activityName}"/>
+                        <p:panelGrid columns="2">
 
-                            <p:outputLabel value="IN document types"/>
-                            <p:repeat value="#{activityController.inDocumentTypeList}" var="ins">
-                                <li> <h:outputText value="#{ins.name}" /></li>
-                            </p:repeat>
+                            <h:panelGrid columns="1">
+                                <p:outputLabel id="id" value="Id: #{activityController.activity.activityID}"/>
+                                <p:outputLabel id="name" value="Name: #{activityController.activity.activityName}"/>
+                            </h:panelGrid>
 
-                            <p:outputLabel value="OUT document types"/>
-                            <p:repeat value="#{activityController.outDocumentTypeList}" var="outs">
-                                <li> <h:outputText value="#{outs.name}" /></li>
-                            </p:repeat>
-                            <p:panelGrid columns="2">
-                                <h:commandButton id="editActivityButton" value="Edit"  />
-                                <h:commandButton id="deleteActivityButton" value="Delete"  />
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editActivityButton" rendered="#{loginController.admin}" value="Edit Activity" action="#{activityController.edit(act)}" />
+                                <h:commandButton id="deleteActivityButton" rendered="#{loginController.admin}" value="Delete Activity"  action="#{activityController.delete(act)}"/>
+                            </h:panelGrid>
 
-                            </p:panelGrid>
-                        </h:panelGrid>
+                        </p:panelGrid>
+                        <br/>
+                        <p:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="IN document types"/>
+                                <p:repeat value="#{activityController.inDocumentTypeList}" var="ins">
+                                    <li> <h:outputText value="#{ins.name}" /></li>
+                                </p:repeat>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <c:set var="in" value="IN"/>
+                                <h:commandButton value="View all IN document types" action="#{documentTypeController.showAllFor(act, in)}"/>
+                                <h:commandButton value="Add IN document types" rendered="#{loginController.admin}" action="#{documentTypeController.createNewFor(act, in)}"/>
+                            </h:panelGrid>
+                        </p:panelGrid>
+                        <br/>
+                        <p:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel value="OUT document types"/>
+                                <p:repeat value="#{activityController.outDocumentTypeList}" var="outs">
+                                    <li> <h:outputText value="#{outs.name}" /></li>
+                                </p:repeat>
+                            </h:panelGrid>
+                            
+                            <h:panelGrid columns="1">
+                                <c:set var="out" value="OUT"/>
+                                <h:commandButton value="View all OUT document types" action="#{documentTypeController.showAllFor(act, out)}"/>
+                                <h:commandButton value="Add OUT document types" rendered="#{loginController.admin}" action="#{documentTypeController.createNewFor(act, out)}"/>
+                            </h:panelGrid>
+                        </p:panelGrid>
+
                     </p:panel>
                 </h:form> 
             </ui:define>

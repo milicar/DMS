@@ -1,0 +1,40 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>Company Form</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="companyForm">
+                    <p:panel header="Company">
+                        <h:panelGrid columns="1">
+
+                            <p:outputLabel  value="ID: #{companyController.company.companyID}"/>
+                            <p:outputLabel for="name" value="Name: " />
+                            <p:inputText id="name" value="#{companyController.company.companyName}"
+                                         required="true" requiredMessage="Please provide company name."/>
+                            <h:message for="name"/>
+                            <p:outputLabel for="description" value="Company description: "/>
+                            <p:inputText id="description" value="#{companyController.company.companyDescription}"/>
+                                         
+
+                            <p:outputLabel for="address" value="Address: "/>
+                            <p:inputText id="address" value="#{companyController.company.companyAddress}"/>
+                            
+                            <h:commandButton value="Save" action="#{companyController.save}"/>
+                        </h:panelGrid>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</f:view>

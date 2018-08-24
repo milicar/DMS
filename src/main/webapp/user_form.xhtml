@@ -1,0 +1,62 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>User Form</title>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="userForm">
+                    <p:panel header="User">
+                        <h:panelGrid columns="1">
+
+                            <p:outputLabel rendered="true" value="ID: #{userController.user.userId}"/>
+                            <p:outputLabel for="fname" value="First Name: " />
+                            <p:inputText id="fname" value="#{userController.user.firstName}"
+                                         required="true" requiredMessage="First name is not valid."/>
+                            <h:message for="fname"/>
+                            <p:outputLabel for="lname" value="Last Name: "/>
+                            <p:inputText id="lname" value="#{userController.user.lastName}"
+                                         required="true" requiredMessage="Last name is not valid."/>
+                            <h:message for="lname"/>
+                            <!--<p:outputLabel for="compChoice" value="Company: "/>-->
+
+
+<!--                            <p:selectOneMenu id="compChoice" value="#{userController.compName}">
+                                <f:selectItem itemLabel="Select Company" itemValue=""/>
+                                <c:forEach items="#{userController.companies}" var="cy">
+                                    <f:selectItem itemLabel="#{cy.companyName}" itemValue="#{cy.companyID}"/>
+
+                                </c:forEach>
+
+                            </p:selectOneMenu>-->
+
+                            <p:outputLabel value="Role: "/>
+                            <p:inputText value="#{userController.user.userRole}"/>
+                            <p:outputLabel value="Email: "/>
+                            <p:inputText value="#{userController.user.email}"/>
+
+                            <p:outputLabel value="Username: "/>
+                            <p:inputText value="#{userController.user.username}"/>
+                            <p:outputLabel value="Password: "/>
+                            <p:password value="#{userController.user.password}"/>
+
+
+                            <h:commandButton value="Save" action="#{userController.save()}"/>
+                        </h:panelGrid>
+
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</f:view>

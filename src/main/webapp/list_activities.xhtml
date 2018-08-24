@@ -4,42 +4,37 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Document Types</title>
+        <title>Activities</title>
     </h:head>
     <h:body>
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
 
                 <h:form id="activitiesList">
-                    <p:panel header="Activities List">
-                        <h:commandButton id="addActivityButton" action="#{activityController.createNew()}" 
+                    <p:panel header="Activities for process: #{activityController.parent.processName}">
+                        <h:commandButton id="addActivityButton" rendered="#{loginController.admin}"
+                                         action="#{activityController.createNewFor(activityController.parent)}" 
                                          value="Add activity"/>
-                        <p:dataTable id="table" var="activity" value="#{activityController.activityList}">
+                        <p:dataTable id="table" var="activ" value="#{activityController.activityList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{activity.activityID}" />
+                                <h:outputText value="#{activ.activityID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{activityController.show(activity)}">
-                                    <h:outputText value="#{activity.activityName}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{activityController.show(activ)}">
+                                    <h:outputText value="#{activ.activityName}" />
                                 </h:commandLink>
                             </p:column>
 
-<!--                            <p:column headerText="Document Types">
-                                <h:outputText value="#{activity.documentTypeList}" />
-                            </p:column>-->
 
-
-                            <p:column headerText="Delete">
-                                <h:commandButton id="deleteOneActivityButton"
-                                                 action="#{activityController.delete(activity)}"
+                            <p:column headerText="Action" rendered="#{loginController.admin}">
+                                <h:commandButton id="deleteOneActivityButton" rendered="#{loginController.admin}"
+                                                 action="#{activityController.delete(activ)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
-                                <h:commandButton id="editOneActivityButton"
-                                                 action="#{activityController.edit(activity)}"
+                            
+                                <h:commandButton id="editOneActivityButton" rendered="#{loginController.admin}"
+                                                 action="#{activityController.edit(activ)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

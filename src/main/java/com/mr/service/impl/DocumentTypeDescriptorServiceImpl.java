@@ -1,17 +1,13 @@
 package com.mr.service.impl;
 
 import com.mr.dao.DocumentTypeDescriptorDAO;
-import com.mr.domain.Document;
 import com.mr.domain.DocumentType;
 import com.mr.domain.DocumentTypeDescriptor;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import com.mr.service.DocumentTypeDescriptorService;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DocumentTypeDescriptorServiceImpl implements DocumentTypeDescriptorService {

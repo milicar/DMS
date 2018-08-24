@@ -11,38 +11,36 @@
             <ui:define name="content">
 
                 <h:form id="documentList">
-                    <p:panel header="Documents of type #{documentController.documentType.name}">
-                        <h:commandButton id="addDocumentButton" action="#{documentController.createNew()}" 
+                    <p:panel header="Documents of type: #{documentController.documentType.name}">
+                        <h:commandButton id="addDocumentButton" action="#{documentController.createNewFor(documentController.documentType)}" 
                                          value="Add document"/>
-                        <p:dataTable id="table" var="document" value="#{documentController.documentList}">
+                        <p:dataTable id="table" var="doc" value="#{documentController.documentList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{document.documentID}" />
+                                <h:outputText value="#{doc.documentID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{documentController.show(document)}">
-                                    <h:outputText value="#{document.documentName}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{documentController.show(doc)}">
+                                    <h:outputText value="#{doc.documentName}" />
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Location">
-                                <h:outputText value="#{document.documentLocation}" />
+                                <h:outputText value="#{doc.documentLocation}" />
                             </p:column>
 
                             <p:column headerText="Author">
-                                <h:outputText value="#{document.author.firstName} #{document.author.lastName}" />
+                                <h:outputText value="#{doc.author.firstName} #{doc.author.lastName}" />
                             </p:column>
 
-                            <p:column headerText="Delete">
+                            <p:column headerText="Action">
                                 <h:commandButton id="deleteOneDocTypeButton"
-                                                 action="#{documentController.delete(document)}"
+                                                 action="#{documentController.delete(doc)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
+                            
                                 <h:commandButton id="editOneDocTypeButton"
-                                                 action="#{documentController.edit(document)}"
+                                                 action="#{documentController.edit(doc)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

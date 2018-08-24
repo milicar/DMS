@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +25,10 @@ public abstract class Process implements Serializable{
     private String processName;
     @Column(name = "process_description")
     private String processDescription;
-//    @Column
-//    private boolean primitive;
-//    
+   
     @OneToMany(mappedBy = "parent")
     private List<Subprocess> subprocessList;
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     private List<Activity> activityList;
 
     public Process() {
@@ -85,6 +84,11 @@ public abstract class Process implements Serializable{
 
     public void setActivityList(List<Activity> activityList) {
         this.activityList = activityList;
+    }
+
+    @Override
+    public String toString() {
+        return "Process: " + processName + "."; 
     }
     
     

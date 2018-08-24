@@ -28,22 +28,24 @@
 
                             <p:outputLabel for="description" value="Short description: "/>
                             <p:inputText id="description" value="#{documentTypeController.documentType.shortDescription}"/>
-                            <p:outputLabel value="Descriptors: "/>
 
-                            <p:repeat var="descriptor" value="#{documentTypeController.descriptorList}">
+                            <c:choose>
+                                <c:when test="#{documentTypeController.descriptorList.size() > 0}">
 
-                               
+                                    <p:outputLabel value="Descriptors: "/>
                                     <p:panelGrid columns="2">
-                                        <p:column>
-                                            <p:outputLabel value="#{descriptor.descriptorName} "/>
-                                        </p:column>
-                                        <p:column>
-                                            <h:commandButton value="Delete" action="#{documentTypeController.deleteDescriptor(descriptor)}"/>
-                                        </p:column>
+                                        <p:repeat var="desc" value="#{documentTypeController.descriptorList}">
+                                            <p:column>
+                                                <p:outputLabel id="dsc" value="#{desc.descriptorName} "/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:commandButton value="Delete" action="#{documentTypeController.deleteDescriptor(desc)}"/>
+                                            </p:column>
+                                            <br/>
+                                        </p:repeat>
                                     </p:panelGrid>
-                                
-
-                            </p:repeat>
+                                </c:when>
+                            </c:choose>
                             <br/>
 
                             <ui:insert name="newDescriptorsHere"/>
@@ -51,7 +53,7 @@
                             <h:commandButton value="Add descriptor" action="#{documentTypeController.insertDescriptor()}"/>
                             <br/>
 
-                            <h:commandButton value="Save" action="#{documentTypeController.save}"/>
+                            <h:commandButton value="Save" action="#{documentTypeController.save()}"/>
                         </h:panelGrid>
 
                     </p:panel>

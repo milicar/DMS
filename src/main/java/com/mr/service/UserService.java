@@ -3,6 +3,7 @@ package com.mr.service;
 import com.mr.domain.Company;
 import com.mr.domain.User;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserService {
@@ -16,5 +17,7 @@ public interface UserService {
     User save(User user);
     
     void delete(User user);
+    
+    Optional<User> findByUsername(String username);
     
 }

@@ -1,0 +1,39 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View User</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="userDetails">
+                    <c:set var="usr" value="#{userController.user}"></c:set>
+
+                    <p:panel header="Employee: #{userController.user.firstName} #{userController.user.lastName} of company: #{userController.company.companyName}">
+                        <p:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel id="name" value="Name: #{userController.user.firstName} #{userController.user.lastName}"/>
+                                <p:outputLabel id="company" value="Company: #{userController.user.company.companyName}"/>
+                                <p:outputLabel id="email" value="Email: #{userController.user.email}"/>
+                                <p:outputLabel id="role" value="Role: #{userController.user.userRole}"/>
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editUserButton" value="Edit User" action="#{userController.edit(usr)}" />
+
+                                <h:commandButton id="deleteUserButton" value="Delete User" action="#{userController.delete(usr)}" />
+
+                            </h:panelGrid>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

@@ -10,6 +10,7 @@ import com.mr.service.ActivityService;
 import com.mr.service.ProcessService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +29,20 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public Process findById(Long id) {
         return processDAO.getOne(id);
+    }
+    
+    @Override
+    public List<Process> findAllFor(Company parent){
+        FirstLevelProcess process = new FirstLevelProcess();
+        process.setParent(parent);
+        return processDAO.findAll(Example.of(process));
+    }
+    
+    @Override
+    public List<Process> findAllFor(Process parent){
+        Subprocess subprocess = new Subprocess();
+        subprocess.setParent(parent);
+        return processDAO.findAll(Example.of(subprocess));
     }
 
     @Override

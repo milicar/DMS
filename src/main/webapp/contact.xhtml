@@ -1,0 +1,40 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View Contact</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="contactDetails">
+                    <c:set var="cont" value="#{contactController.contact}"></c:set>
+
+                    <p:panel header="Contact: #{contactController.contact.contactName}">
+                        <p:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel id="id" value="ID:  #{contactController.contact.contactID}"/>
+                                <p:outputLabel id="name" value="Name: #{contactController.contact.contactName}"/>
+                                <p:outputLabel id="info" value="Info: #{contactController.contact.contactInfo}"/>
+                                <p:outputLabel id="email" value="Email: #{contactController.contact.contactEmail}"/>
+                                <p:outputLabel id="address" value="Address: #{contactController.contact.contactAddress}"/>
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editContactButton" rendered="#{loginController.admin}" value="Edit Contact" action="#{contactController.edit(cont)}" />
+
+                                <h:commandButton id="deleteContactButton" rendered="#{loginController.admin}" value="Delete Contact" action="#{contactController.delete(cont)}" />
+
+                            </h:panelGrid>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

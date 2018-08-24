@@ -12,36 +12,35 @@
 
                 <h:form id="companiesList">
                     <p:panel header="Company List">
-                        <h:commandButton id="addCompanyButton" action="#{companyController.createNew()}" value="Add company"/>
-                        <p:dataTable id="table" var="company" value="#{companyController.companyList}">
+                        <h:commandButton id="addCompanyButton" action="#{companyController.createNew()}" 
+                                         value="Add company"/>
+                        <p:dataTable id="table" var="c" value="#{companyController.companyList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{company.companyID}" />
+                                <h:outputText value="#{c.companyID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{companyController.show(company)}">
-                                    <h:outputText value="#{company.companyName}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{companyController.show(c)}">
+                                    <h:outputText value="#{c.companyName}" />
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Description">
-                                <h:outputText value="#{company.companyDescription}" />
+                                <h:outputText value="#{c.companyDescription}" />
                             </p:column>
 
                             <p:column headerText="Address">
-                                <h:outputText value="#{company.companyAddress}" />
+                                <h:outputText value="#{c.companyAddress}" />
                             </p:column>
 
-                            <p:column headerText="Delete">
+                            <p:column headerText="Action">
                                 <h:commandButton id="deleteOneCompanyButton"
-                                                 action="#{companyController.delete(company)}"
+                                                 action="#{companyController.delete(c)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
+                           
                                 <h:commandButton id="editOneCompanyButton"
-                                                 action="#{companyController.edit(company)}"
+                                                 action="#{companyController.edit(c)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

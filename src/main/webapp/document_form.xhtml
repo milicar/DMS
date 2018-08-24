@@ -8,15 +8,17 @@
 
     <h:head>
         <title>Document Form</title>
+       
     </h:head>
     <h:body>
+
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
                 <h:form id="documentForm">
                     <p:panel header="Document">
                         <h:panelGrid columns="1">
 
-                            <p:outputLabel rendered="false" value="ID: #{documentController.document.documentID}"/>
+                            <p:outputLabel rendered="true" value="ID: #{documentController.document.documentID}"/>
                             <p:outputLabel for="name" value="Name: " />
                             <p:inputText id="name" value="#{documentController.document.documentName}"
                                          required="true" requiredMessage="Document name is not valid."/>
@@ -25,31 +27,45 @@
                             <p:inputText id="location" value="#{documentController.document.documentLocation}"
                                          required="true" requiredMessage="Please provide document location."/>
                             <h:message for="location"/>
-                            <p:outputLabel rendered="false" value="Author: #{documentController.document.author}"/>
+                            <p:outputLabel value="Author: "/>
+                            <p:inputText value="#{documentController.document.author.firstName}"/>
+                            <p:inputText value="#{documentController.document.author.lastName}"/>
 
-<!--                           
-                            <p:outputLabel value="Descriptors: "/>
+                            <c:choose>
+                                <c:when test="#{documentController.descriptorList.size() > 0}">
 
-                            <p:repeat var="descriptor" value="#{documentTypeController.descriptorList}">
-
-
-                                <p:panelGrid columns="2">
-                                    <p:column>
-                                        <p:outputLabel value="#{descriptor.descriptorName} "/>
-                                    </p:column>
-                                    <p:column>
-                                        <h:commandButton value="Delete" action="#{documentTypeController.deleteDescriptor(descriptor)}"/>
-                                    </p:column>
-                                </p:panelGrid>
-
-
-                            </p:repeat>
+                                    <p:outputLabel value="Descriptors: "/>
+                                    <p:repeat var="descr" value="#{documentController.descriptorList}">
+                                        <p:panelGrid columns="2">
+                                            <h:column>
+                                                <p:outputLabel value="#{descr.documentTypeDescriptor.descriptorName} "/>
+                                            </h:column>
+                                            <h:column>
+                                                <p:inputText id="descrValue" value="#{descr.descriptorValue}"/>
+                                            </h:column>
+                                        </p:panelGrid>
+                                    </p:repeat>
+                                </c:when>
+                            </c:choose>
                             <br/>
-
-                            <ui:insert name="newDescriptorsHere"/>
-
-                            <h:commandButton value="Add descriptor" action="#{documentTypeController.insertDescriptor()}"/>
-                            <br/>-->
+                            <c:choose>
+                                <c:when test="#{documentController.tagList.size() > 0}">
+                                    <p:outputLabel value="Tags:"/>
+                                    <p:repeat value="#{documentController.tagList}" var="t">
+                                        <p:panelGrid columns="2">
+                                            <h:column>
+                                                <p:outputLabel value="#{t.tagValue}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <h:commandButton value="Delete" action="#{documentController.removeTag(t)}"/>
+                                            </h:column>
+                                        </p:panelGrid>
+                                    </p:repeat>
+                                </c:when>
+                            </c:choose>
+                            <ui:insert name="newTagsHere"/>
+                            <h:commandButton value="Add tag" action="#{documentController.insertTag()}"/>
+                            <br/>
 
                             <h:commandButton value="Save" action="#{documentController.save()}"/>
                         </h:panelGrid>

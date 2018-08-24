@@ -1,0 +1,52 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>First Level Processes</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+
+                <h:form id="flProcessesList">
+                    <p:panel header="Processes for: #{flProcessController.parentCompany.companyName}">
+                        <h:commandButton id="addFlProcessButton" rendered="#{loginController.admin}"
+                                         action="#{flProcessController.createNewFor(flProcessController.parentCompany)}" 
+                                         value="Add process"/>
+
+                        <p:dataTable id="table" var="flp" value="#{flProcessController.processes}">
+
+                            <p:column headerText="# ID">
+                                <h:outputText value="#{flp.processID}" />
+                            </p:column>
+
+                            <p:column headerText="Name">
+                                <h:commandLink styleClass="viewOne" action="#{flProcessController.show(flp)}">
+                                    <h:outputText value="#{flp.processName}" />
+                                </h:commandLink>
+                            </p:column>
+
+                            <p:column headerText="Description">
+                                <h:outputText value="#{flp.processDescription}" />
+                            </p:column>
+
+                            <p:column headerText="Actions" rendered="#{loginController.admin}">
+                                <h:commandButton id="deleteOneFlProcessButton" rendered="#{loginController.admin}"
+                                                 action="#{flProcessController.delete(flp)}"
+                                                 value="Delete" />
+                            
+                                <h:commandButton id="editOneFlProcessButton" rendered="#{loginController.admin}"
+                                                 action="#{flProcessController.edit(flp)}"
+                                                 value="Edit" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</f:view>

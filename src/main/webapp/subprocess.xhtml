@@ -1,0 +1,77 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>View Process</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="WEB-INF/layout.xhtml">
+            <ui:define name="content">
+                <h:form id="subprocessDetails">
+                    <c:set var="subpr" value="#{subprocessController.subprocess}"></c:set>
+
+                    <p:panel header="Subprocess: #{subprocessController.subprocess.processName}  for process: #{subprocessController.parent.processName}">
+                        <p:panelGrid columns="2">
+
+                            <h:panelGrid columns="1">
+
+                                <p:outputLabel id="id" value="Id: #{subprocessController.subprocess.processID}"/>
+                                <p:outputLabel id="name" value="Name: #{subprocessController.subprocess.processName}"/>
+                                <p:outputLabel id="description" value="Description: #{subprocessController.subprocess.processDescription}"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editSubprocessButton" rendered="#{loginController.admin}" value="Edit Process" action="#{subprocessController.edit(subpr)}"/>
+                                <h:commandButton id="deleteSubprocessButton" rendered="#{loginController.admin}" value="Delete Process" action="#{subprocessController.delete(subpr)}"/>
+                            </h:panelGrid>
+                            
+                        </p:panelGrid>
+                        
+                            <c:choose>
+                                <c:when test="#{subprocessController.activityChildren.size() > 0}">
+                                    <h:panelGrid columns="2">
+                                        <h:column>
+                                        Activities:
+                                        <p:repeat value="#{subprocessController.activityChildren}" var="actChild">
+                                            <li><p:outputLabel value="#{actChild.activityName}"/></li>
+                                        </p:repeat>
+                                        </h:column>
+                                        <h:column>
+                                        <h:commandButton value="View all activities" action="#{activityController.showAllFor(subpr)}"/><br/>
+                                        <h:commandButton value="Add new activity" action="#{activityController.createNewFor(subpr)}"/>
+                                        </h:column>
+                                    </h:panelGrid>
+                                </c:when>
+                                <c:when test="#{subprocessController.processChildren.size() > 0}">
+                                    <h:panelGrid columns="2">
+                                        <h:column>
+                                            Subprocesses:
+                                            <p:repeat value="#{subprocessController.processChildren}" var="procChild">
+                                                <li><p:outputLabel value="#{procChild.processName}"/></li>
+                                            </p:repeat>
+                                        </h:column>
+                                        <h:column>
+                                            <h:commandButton value="View all subprocesses" action="#{subprocessController.showAllFor(subpr)}"/><br/>
+                                            <h:commandButton value="Add new subprocess" action="#{subprocessController.createNewFor(subpr)}"/>
+                                        </h:column>
+                                    </h:panelGrid>
+                                </c:when>
+                                <c:otherwise>
+                                    <h:commandButton value="Add subprocess" action="#{subprocessController.createNewFor(subpr)}"/><br/>
+                                    <h:commandButton value="Add activity" action="#{activityController.createNewFor(subpr)}"/>
+
+                                </c:otherwise>
+                            </c:choose>
+
+                    </p:panel>
+
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>

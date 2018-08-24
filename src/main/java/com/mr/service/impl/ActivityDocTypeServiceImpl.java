@@ -47,6 +47,15 @@ public class ActivityDocTypeServiceImpl implements ActivityDocTypeService {
     public ActivityDocumentType save(ActivityDocumentType activityDocumentType) {
         return activityDocTypeDAO.save(activityDocumentType);
     }
+    
+    @Override
+    public ActivityDocumentType save(Activity activity, DocumentType documentType, ActivityDocumentType.Direction direction){
+        ActivityDocumentType adt = new ActivityDocumentType();
+        adt.setActivity(activity);
+        adt.setDocumentType(documentType);
+        adt.setDirection(direction);
+        return activityDocTypeDAO.save(adt);
+    }
 
     @Override
     public void delete(ActivityDocumentType activityDocumentType) {

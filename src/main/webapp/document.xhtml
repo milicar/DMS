@@ -15,37 +15,48 @@
                 <h:form id="documentDetails">
                     <c:set var="doc" value="#{documentController.document}"></c:set>
 
-                    <p:panel header="Document">
-                        <h:panelGrid columns="1">
-                            
-                            <p:outputLabel id="name" value="Name: #{documentController.document.documentName}"/>
-                            <p:outputLabel id="location" value="Location: #{documentController.document.documentLocation}"/>
-                            <p:outputLabel id="description" value="Author: #{documentController.document.author.firstName}"/>
-                            <p:outputLabel id="type" value="Document type: #{documentController.document.documentType.name}"/>
+                    <p:panel header="Document: #{documentController.document.documentName} of type: #{documentController.documentType.name}">
+                        <p:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel id="name" value="Name: #{documentController.document.documentName}"/>
+                                <p:outputLabel id="location" value="Location: #{documentController.document.documentLocation}"/>
+                                <p:outputLabel id="description" value="Author: #{documentController.document.author.firstName} #{documentController.document.author.lastName}"/>
+                                <p:outputLabel id="type" value="Document type: #{documentController.document.documentType.name}"/>
 
-                            <p:outputLabel value="Tags:"/>
-                            <p:repeat value="#{documentController.document.tagList}" var="tag">
-                                <li> <h:outputText value="#{tag.tagValue}" /></li>
-                            </p:repeat>
-                            
-                            <p:outputLabel value="Descriptors:"/>
-                            <p:repeat value="#{documentController.document.documentDescriptorList}" var="desc">
-                                <li> <h:outputText 
-                                        value="#{desc.documentTypeDescriptor.descriptorName} : #{desc.descriptorValue}" /></li>
-                            </p:repeat>
-                            <p:panelGrid columns="2">
-                                <h:commandButton id="editDocButton" value="Edit" action="#{documentController.edit(doc)}" />
-                                <h:commandButton id="deleteDocButton" value="Delete" action="#{documentController.deleteThis()}" />
-                            <p:outputLabel id="type2" value="Document type: #{documentController.document.documentType.name}"/>
+                                <c:choose>
+                                    <c:when test="#{documentController.descriptorList.size() > 0}">
+                                        <p:outputLabel value="Descriptors:"/>
+                                        <p:repeat value="#{documentController.descriptorList}" var="desc">
+                                            <li> <h:outputText 
+                                                    value="#{desc.documentTypeDescriptor.descriptorName} : #{desc.descriptorValue}" /></li>
+                                        </p:repeat>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:outputLabel value="There are no descriptors for this document."/>
+                                    </c:otherwise>
+                                </c:choose>
 
-<!--                                <h:commandButton id='showAllDocuments' value='Documents' action="#{documentController.showDocumentsFor(documentTypeController.documentType)}"/>-->
-                                <p:outputLabel value="#{documentController.document}"/>
-                                <p:outputLabel value="#{doc.documentName}"/>
-                                <p:outputLabel value="#{documentController.document.documentType}"/>
-                                <p:outputLabel value="#{documentController.documentType}"/>
-<!--                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNew(documentTypeController.documentType)}"/>-->
-                            </p:panelGrid>
-                        </h:panelGrid>
+                                <c:choose>
+                                    <c:when test="#{documentController.tagList.size() > 0}">
+                                        <p:outputLabel value="Tags:"/>
+                                        <p:repeat value="#{documentController.tagList}" var="tag">
+                                            <li> <h:outputText value="#{tag.tagValue}" /></li>
+                                        </p:repeat>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:outputLabel value="There are no tags for this document."/>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <h:commandButton id="editOneDocButton" value="Edit Document" action="#{documentController.edit(doc)}" />
+
+                                <h:commandButton id="deleteOneDocButton" value="Delete Document" action="#{documentController.delete(doc)}" />
+
+                            </h:panelGrid>
+                        </p:panelGrid>
                     </p:panel>
                 </h:form> 
             </ui:define>

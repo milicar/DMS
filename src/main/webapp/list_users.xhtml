@@ -4,44 +4,42 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Companies</title>
+        <title>Users</title>
     </h:head>
     <h:body>
         <ui:composition template="WEB-INF/layout.xhtml">
             <ui:define name="content">
 
                 <h:form id="usersList">
-                    <p:panel header="User List">
-                        <h:commandButton id="addUserButton" action="#{userController.createNew()}" value="Add user"/>
-                        <p:dataTable id="table" var="user" value="#{userController.userList}">
+                    <p:panel header="All Users">
+                        <h:commandButton id="addUserButton" action="#{userController.createNewFor(userController.user.company)}" value="Add user"/>
+                        <p:dataTable id="table" var="emp" value="#{userController.userList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{user.userId}" />
+                                <h:outputText value="#{emp.userId}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink action="#{userController.show(user)}">
-                                    <h:outputText value="#{user.firstName} #{user.lastName}" style="color: red"/>
+                                <h:commandLink styleClass="viewOne" action="#{userController.show(emp)}">
+                                    <h:outputText value="#{emp.firstName} #{emp.lastName}"/>
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Company">
-                                <h:outputText value="#{user.company.companyName}" />
+                                <h:outputText value="#{emp.company.companyName}" />
                             </p:column>
 
                             <p:column headerText="Email">
-                                <h:outputText value="#{user.email}" />
+                                <h:outputText value="#{emp.email}" />
                             </p:column>
 
-                            <p:column headerText="Delete">
+                            <p:column headerText="Action">
                                 <h:commandButton id="deleteOneUserButton"
-                                                 action="#{userController.delete(user)}"
+                                                 action="#{userController.delete(emp)}"
                                                  value="Delete" />
-                            </p:column>
-
-                            <p:column headerText="Edit">
+                            
                                 <h:commandButton id="editOneUserButton"
-                                                 action="#{userController.edit(user)}"
+                                                 action="#{userController.edit(emp)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

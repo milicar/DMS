@@ -13,6 +13,10 @@ public interface ProcessService {
     List<Process> findAll();
 
     Process findById(Long id);
+    
+    List<Process> findAllFor(Company parent);
+    
+    List<Process> findAllFor(Process parent);
 
     Process save(Process process);
 
