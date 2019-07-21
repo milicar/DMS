@@ -21,7 +21,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 @SessionScope
 @Controller
-class LoginController {
+public class LoginController {
 
     @Autowired
     private UserService userService;
@@ -43,6 +43,7 @@ class LoginController {
     public User getLoggedInUser() {
         return loggedInUser;
     }
+//make private all of these
 
     public void setLoggedInUser(User user) {
         this.loggedInUser = user;
@@ -65,7 +66,7 @@ class LoginController {
     }
 
     public boolean isAdmin() {
-        return this.loggedInUser.getUserRole().toString().equals("ADMIN");
+        return this.loggedInUser.getUserRole().toString().equals("ADMIN"); //delegate to user service
     }
 
     public String login() {
@@ -76,43 +77,46 @@ class LoginController {
                 setLoggedInUser(qu);
                 return start();
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid password!"));
+                getFacesContextInstance().addMessage(null, new FacesMessage("Invalid password!"));
                 return "";
             }
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid credentials!"));
+            getFacesContextInstance().addMessage(null, new FacesMessage("Invalid credentials!"));
             return "";
         }
     }
 
-    private String start() {
+    protected FacesContext getFacesContextInstance() {
+        return FacesContext.getCurrentInstance();
+    }
+
+    protected String start() {
         if (isAdmin()) {
             return companyController.showAll();
-        }
-        else {
-            return companyController.show(getLoggedInUser().getCompany());
+        } else {
+            return companyController.show(getLoggedInUser().getCompany()); // user service
         }
     }
-    
-    public String logout(){
+
+    public String logout() {
         setLoggedInUser(null);
         return "index";
     }
 
-    public List<Process> getFlProcessesForUser(){
-        return processService.findAllFor(getLoggedInUser().getCompany());
+    public List<Process> getFlProcessesForUser() {
+        return processService.findAllFor(getLoggedInUser().getCompany()); // user service // ping-pong!!
     }
-    
-    public List<Process> getSubprocessesForUser(){
+
+    public List<Process> getSubprocessesForUser() {
         List<Process> subs = new ArrayList<>();
         List<Process> flpros = getFlProcessesForUser();
         flpros.forEach(fl -> processService.findAllFor(fl)
                 .forEach(s -> subs.add(s)));
         return subs;
     }
-    
-    public List<Activity> getActivitiesForUser(){
+
+    public List<Activity> getActivitiesForUser() {
         List<Activity> acts = new ArrayList<>();
         getFlProcessesForUser().forEach(fl -> activityService.findAllFor(fl)
                 .forEach(a -> acts.add(a)));
@@ -120,15 +124,15 @@ class LoginController {
                 .forEach(a -> acts.add(a)));
         return acts;
     }
-    
-    public List<DocumentType> getDocTypesForUser(){
+
+    public List<DocumentType> getDocTypesForUser() {
         List<DocumentType> doctypes = new ArrayList<>();
         getActivitiesForUser().forEach(act -> documentTypeService.findAllFor(act)
                 .forEach(dt -> doctypes.add(dt)));
         return doctypes;
     }
-    
-    public List<Document> getDocumentsForUser(){
+
+    public List<Document> getDocumentsForUser() {
         List<Document> docs = new ArrayList<>();
         getDocTypesForUser().forEach(dt -> documentService.findAllFor(dt)
                 .forEach(d -> docs.add(d)));
