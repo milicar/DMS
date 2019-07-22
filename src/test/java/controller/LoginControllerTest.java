@@ -4,14 +4,11 @@ import com.mr.domain.Role;
 import com.mr.domain.User;
 import com.mr.controller.HierarchyController;
 import com.mr.controller.LoginController;
-import com.mr.service.DocumentService;
-import com.mr.service.DocumentTypeService;
 import com.mr.service.UserService;
 import java.util.Optional;
 import javax.faces.context.FacesContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,8 +30,6 @@ public class LoginControllerTest {
     @Mock private UserService userService;
     @Mock private FacesContext facesContext;
     @Mock HierarchyController hierarchyController;
-    @Mock DocumentTypeService docTypeService;
-    @Mock DocumentService documentService;
     @InjectMocks @Spy
     TestableLoginController loginController = new TestableLoginController();
 
@@ -82,10 +77,13 @@ public class LoginControllerTest {
 
     @Test
     public void shouldCheckIfUserIsAdministrator() {
-        Role admin = Role.ADMIN;
-        when(loggedInUser.getUserRole()).thenReturn(admin);
-
-        assertTrue(loginController.isAdmin());
+        registeredUser = new User();
+        registeredUser.setUserRole(Role.ADMIN);
+        loginController.setLoggedInUser(registeredUser);
+       
+        loginController.isAdmin();
+        assertEquals(registeredUser, loginController.getLoggedInUser());
+        verify(userService).isAdmin(loginController.getLoggedInUser());
     }
 
     

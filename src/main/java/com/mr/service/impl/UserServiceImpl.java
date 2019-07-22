@@ -50,4 +50,15 @@ public class UserServiceImpl implements UserService {
         return userDao.findOne(Example.of(user));
     }
 
+    @Override
+    public boolean isAdmin(User user) {
+        return "ADMIN".equals(user.getUserRole().toString());
+    }
+
+    @Override
+    public Company getUsersCompany(User user) {
+        return user.getCompany();
+    }
+
+    
 }

@@ -9,6 +9,7 @@ import com.mr.service.ActivityService;
 import com.mr.service.DocumentService;
 import com.mr.service.DocumentTypeService;
 import com.mr.service.ProcessService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HierarchyController {
 
     @Autowired
-    LoginController loginController;
-    @Autowired
     CompanyController companyController;
+    @Autowired
+    UserService userService;
     @Autowired
     ProcessService processService;
     @Autowired
@@ -29,15 +30,15 @@ public class HierarchyController {
     DocumentService documentService;
 
     public String start(User loggedInUser) {
-        if (loginController.isAdmin()) {  //prebaci na user service
+        if (userService.isAdmin(loggedInUser)) {
             return companyController.showAll();
         } else {
-            return companyController.show(loggedInUser.getCompany()); // user service
+            return companyController.show(userService.getUsersCompany(loggedInUser));
         }
     }
 
     public List<Process> getFlProcessesForUser(User loggedInUser) {
-        return processService.findAllFor(loggedInUser.getCompany()); // user service // ping-pong!!
+        return processService.findAllFor(userService.getUsersCompany(loggedInUser)); // ping-pong!
     }
 
     public List<Process> getSubprocessesForUser(User loggedInUser) {

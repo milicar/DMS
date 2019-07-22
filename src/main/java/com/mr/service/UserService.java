@@ -20,4 +20,8 @@ public interface UserService {
     
     Optional<User> findByUsername(String username);
     
+    boolean isAdmin(User user);
+    
+    Company getUsersCompany(User user);
+    
 }

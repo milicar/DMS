@@ -2,7 +2,6 @@ package controller;
 
 import com.mr.controller.CompanyController;
 import com.mr.controller.HierarchyController;
-import com.mr.controller.LoginController;
 import com.mr.domain.Activity;
 import com.mr.domain.Company;
 import com.mr.domain.DocumentType;
@@ -14,6 +13,7 @@ import com.mr.service.ActivityService;
 import com.mr.service.DocumentService;
 import com.mr.service.DocumentTypeService;
 import com.mr.service.ProcessService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -32,8 +32,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class HierarchyControllerTest {
 
-    @Mock
-    LoginController loginController;
+    @Mock 
+    UserService userService;
     @Mock
     CompanyController companyController;
     @Mock
@@ -52,7 +52,7 @@ public class HierarchyControllerTest {
 
     @Test
     public void shouldShowAllCompaniesForAdmin() {
-        doReturn(Boolean.TRUE).when(loginController).isAdmin();
+        doReturn(Boolean.TRUE).when(userService).isAdmin(any());
         when(companyController.showAll()).thenReturn("all companies");
 
         assertEquals("all companies", hierarchyController.start(loggedInUser));
@@ -62,10 +62,11 @@ public class HierarchyControllerTest {
     public void shouldShowOnlyUsersCompany() {
         Company usersCompany = new Company();
         loggedInUser.setCompany(usersCompany);
-        //when(loginController.getLoggedInUser()).thenReturn(loggedInUser);
-        doReturn(Boolean.FALSE).when(loginController).isAdmin();
+        doReturn(Boolean.FALSE).when(userService).isAdmin(loggedInUser);
 
         when(companyController.show(usersCompany)).thenReturn("user's company");
+        when(userService.getUsersCompany(loggedInUser)).thenReturn(usersCompany);
+      
         assertEquals("user's company", hierarchyController.start(loggedInUser));
 
     }
@@ -74,6 +75,7 @@ public class HierarchyControllerTest {
     public void shouldReturnFirstLevelProcessesForLoggedInUser() {
         Company company = new Company();
         loggedInUser.setCompany(company);
+        when(userService.getUsersCompany(loggedInUser)).thenReturn(company);
 
         hierarchyController.getFlProcessesForUser(loggedInUser);
         verify(processService).findAllFor(company);
@@ -85,6 +87,7 @@ public class HierarchyControllerTest {
         List<Process> processList = new ArrayList<>();
         processList.add(parent);
         doReturn(processList).when(hierarchyController).getFlProcessesForUser(loggedInUser);
+        
         hierarchyController.getSubprocessesForUser(loggedInUser);
         verify(processService).findAllFor(parent);
 
@@ -101,6 +104,7 @@ public class HierarchyControllerTest {
 
         doReturn(processList).when(hierarchyController).getFlProcessesForUser(loggedInUser);
         doReturn(subprocessList).when(hierarchyController).getSubprocessesForUser(loggedInUser);
+       
         hierarchyController.getActivitiesForUser(loggedInUser);
         verify(activityService).findAllFor(process);
         verify(activityService).findAllFor(subprocess);
@@ -115,6 +119,7 @@ public class HierarchyControllerTest {
         activityList.add(activity2);
 
         doReturn(activityList).when(hierarchyController).getActivitiesForUser(loggedInUser);
+        
         hierarchyController.getDocTypesForUser(loggedInUser);
         verify(documentTypeService, times(2)).findAllFor(any());
     }
@@ -127,6 +132,7 @@ public class HierarchyControllerTest {
         docTypeList.add(documentType);
 
         doReturn(docTypeList).when(hierarchyController).getDocTypesForUser(loggedInUser);
+       
         hierarchyController.getDocumentsForUser(loggedInUser);
         verify(documentService, times(2)).findAllFor(documentType);
     }

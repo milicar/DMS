@@ -5,10 +5,6 @@ import com.mr.domain.Document;
 import com.mr.domain.DocumentType;
 import com.mr.domain.Process;
 import com.mr.domain.User;
-import com.mr.service.ActivityService;
-import com.mr.service.DocumentService;
-import com.mr.service.DocumentTypeService;
-import com.mr.service.ProcessService;
 import com.mr.service.UserService;
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +20,6 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private CompanyController companyController;
-    @Autowired
-    private ProcessService processService;
-    @Autowired
-    private ActivityService activityService;
-    @Autowired
-    private DocumentTypeService documentTypeService;
-    @Autowired
-    private DocumentService documentService;
     @Autowired
     private HierarchyController hierarchyController;
    
@@ -67,11 +53,11 @@ public class LoginController {
     }
 
     public boolean isAdmin() {
-        return this.loggedInUser.getUserRole().toString().equals("ADMIN"); //delegate to user service
+        return userService.isAdmin(getLoggedInUser());
     }
 
     public String login() {
-        Optional<User> queriedUser = userService.findByUsername(username);
+        Optional<User> queriedUser = userService.findByUsername(getUsername());
         if (queriedUser.isPresent()) {
             User qu = (User) queriedUser.get();
             if (getPassword().equals(qu.getPassword())) {
@@ -100,7 +86,6 @@ public class LoginController {
 
     public List<Process> getFlProcessesForUser() {
         return hierarchyController.getFlProcessesForUser(loggedInUser); 
-       // findAllFlProcesses = processService.findAllFor(getLoggedInUser().getCompany()); // user service // ping-pong!!
     }
 
     public List<Process> getSubprocessesForUser() {
