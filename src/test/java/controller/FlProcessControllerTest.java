@@ -2,20 +2,19 @@ package controller;
 
 import com.mr.service.ProcessService;
 import com.mr.controller.FlProcessController;
-import com.mr.controller.LoginController;
+import com.mr.controller.HierarchyController;
 import com.mr.domain.Activity;
 import com.mr.domain.Company;
 import com.mr.domain.FirstLevelProcess;
 import com.mr.domain.Process;
-import com.mr.domain.Role;
 import com.mr.domain.Subprocess;
 import com.mr.domain.User;
 import com.mr.service.ActivityService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,11 +33,13 @@ public class FlProcessControllerTest {
     List<Process> processesList;
     List<Activity> activitiesList;
     @Mock
+    HierarchyController hierarchyController;
+    @Mock
+    UserService userService;
+    @Mock
     ProcessService processService;
     @Mock
     ActivityService activityService;
-    @Mock
-    LoginController loginController;
     @InjectMocks
     FlProcessController flProcessControler;
 
@@ -61,11 +62,11 @@ public class FlProcessControllerTest {
     @Test
     public void shouldReturnCompanyProcessesForEmployee() {
         User user = new User();
-        user.setUserRole(Role.USER);
         process = new FirstLevelProcess();
         processesList = new ArrayList<>();
         processesList.add(process);
-        when(loginController.getFlProcessesForUser()).thenReturn(processesList);
+        when(userService.isAdmin(user)).thenReturn(Boolean.FALSE);
+        when(hierarchyController.buildListOfFirstLevelProcessesFor(user)).thenReturn(processesList);
 
         flProcessControler.showAllFor(user);
 
@@ -76,11 +77,11 @@ public class FlProcessControllerTest {
     @Test
     public void shouldReturnProcessesForAllCompaniesForAdmin() {
         User admin = new User();
-        admin.setUserRole(Role.ADMIN);
         process = new FirstLevelProcess();
         processesList = new ArrayList<>();
         processesList.add(process);
         when(processService.findAll()).thenReturn(processesList);
+        when(userService.isAdmin(admin)).thenReturn(Boolean.TRUE);
 
         flProcessControler.showAllFor(admin);
 
@@ -149,23 +150,23 @@ public class FlProcessControllerTest {
         verify(processService).save(process);
         assertEquals(company, flProcessControler.getFlProcess().getParent());
     }
-    
+
     @Test
     public void shouldEditProcess() {
         process = new FirstLevelProcess();
-        
+
         flProcessControler.edit((FirstLevelProcess) process);
-        
+
         assertEquals(process, flProcessControler.getFlProcess());
         assertEquals("flprocess_form", flProcessControler.edit((FirstLevelProcess) process));
     }
-    
+
     @Test
     public void shouldDeleteProcess() {
         process = new FirstLevelProcess();
-                
+
         flProcessControler.delete((FirstLevelProcess) process);
-        
+
         verify(processService).delete(process);
     }
 }

@@ -37,20 +37,20 @@ public class HierarchyController {
         }
     }
 
-    public List<Process> getFlProcessesForUser(User loggedInUser) {
-        return processService.findAllFor(userService.getUsersCompany(loggedInUser)); // ping-pong!
+    public List<Process> buildListOfFirstLevelProcessesFor(User loggedInUser) {
+        return processService.findAllFor(userService.getUsersCompany(loggedInUser));
     }
 
     public List<Process> getSubprocessesForUser(User loggedInUser) {
         List<Process> subs = new ArrayList<>();
-        getFlProcessesForUser(loggedInUser).forEach(fl -> processService.findAllFor(fl)
+        buildListOfFirstLevelProcessesFor(loggedInUser).forEach(fl -> processService.findAllFor(fl)
                 .forEach(s -> subs.add(s)));
         return subs;
     }
 
     public List<Activity> getActivitiesForUser(User loggedInUser) {
         List<Activity> acts = new ArrayList<>();
-        getFlProcessesForUser(loggedInUser).forEach(fl -> activityService.findAllFor(fl)
+        buildListOfFirstLevelProcessesFor(loggedInUser).forEach(fl -> activityService.findAllFor(fl)
                 .forEach(a -> acts.add(a)));
         getSubprocessesForUser(loggedInUser).forEach(sub -> activityService.findAllFor(sub)
                 .forEach(a -> acts.add(a)));

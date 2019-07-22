@@ -77,7 +77,7 @@ public class HierarchyControllerTest {
         loggedInUser.setCompany(company);
         when(userService.getUsersCompany(loggedInUser)).thenReturn(company);
 
-        hierarchyController.getFlProcessesForUser(loggedInUser);
+        hierarchyController.buildListOfFirstLevelProcessesFor(loggedInUser);
         verify(processService).findAllFor(company);
     }
 
@@ -86,7 +86,7 @@ public class HierarchyControllerTest {
         FirstLevelProcess parent = new FirstLevelProcess();
         List<Process> processList = new ArrayList<>();
         processList.add(parent);
-        doReturn(processList).when(hierarchyController).getFlProcessesForUser(loggedInUser);
+        doReturn(processList).when(hierarchyController).buildListOfFirstLevelProcessesFor(loggedInUser);
         
         hierarchyController.getSubprocessesForUser(loggedInUser);
         verify(processService).findAllFor(parent);
@@ -102,7 +102,7 @@ public class HierarchyControllerTest {
         List<Process> subprocessList = new ArrayList<>();
         subprocessList.add(subprocess);
 
-        doReturn(processList).when(hierarchyController).getFlProcessesForUser(loggedInUser);
+        doReturn(processList).when(hierarchyController).buildListOfFirstLevelProcessesFor(loggedInUser);
         doReturn(subprocessList).when(hierarchyController).getSubprocessesForUser(loggedInUser);
        
         hierarchyController.getActivitiesForUser(loggedInUser);

@@ -83,10 +83,7 @@ public class LoginController {
         setLoggedInUser(null);
         return "index";
     }
-
-    public List<Process> getFlProcessesForUser() {
-        return hierarchyController.getFlProcessesForUser(loggedInUser); 
-    }
+    
 
     public List<Process> getSubprocessesForUser() {
         return hierarchyController.getSubprocessesForUser(loggedInUser);

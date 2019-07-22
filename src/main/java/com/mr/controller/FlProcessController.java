@@ -7,6 +7,7 @@ import com.mr.domain.FirstLevelProcess;
 import com.mr.domain.User;
 import com.mr.service.ActivityService;
 import com.mr.service.ProcessService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,25 @@ import org.springframework.web.context.annotation.SessionScope;
 public class FlProcessController {
 
     @Autowired
-    private LoginController loginController;
+    private UserService userService;
     @Autowired
     private ProcessService processService;
     @Autowired
     private ActivityService activityService;
-    
-    
+    @Autowired
+    private HierarchyController hierarchyController;
     private FirstLevelProcess flProcess;
     private Company parentCompany;
     private List<Process> processes;
     private List<Process> processChildren;
     private List<Activity> activityChildren;
 
-    
     public FlProcessController() {
         flProcess = new FirstLevelProcess();
         parentCompany = new Company();
         processChildren = new ArrayList<>();
         activityChildren = new ArrayList<>();
-        
+
     }
 
     public FirstLevelProcess getFlProcess() {
@@ -79,53 +79,54 @@ public class FlProcessController {
     public void setActivityChildren(List<Activity> activityChildren) {
         this.activityChildren = activityChildren;
     }
-    
-    public String showAll(){
+
+    public String showAll() {
         setProcesses(processService.findAll());
         return "list_flprocesses";
-    }     
-    
-    public String showAllFor(Company parent){
+    }
+
+    public String showAllFor(Company parent) {
         setParentCompany(parent);
         setProcesses(processService.findAllFor(parent));
         return "list_flprocesses";
     }
-    
-    public String showAllFor(User loggedInUser){
-        if (loggedInUser.getUserRole().toString().equals("ADMIN")) return showAll();
-        else setProcesses(loginController.getFlProcessesForUser());
-//        setParentCompany(loggedInUser.getCompany());
-//        setProcesses(processService.findAllFor(parentCompany));
+
+    public String showAllFor(User loggedInUser) { 
+        if (userService.isAdmin(loggedInUser)) {
+            return showAll(); 
+        } else {
+            setProcesses(hierarchyController.buildListOfFirstLevelProcessesFor(loggedInUser)); 
+        }
         return "list_flprocesses";
     }
-    
-    public String createNewFor(Company parent){
+
+    public String createNewFor(Company parent) {
         setParentCompany(parent);
         setFlProcess(new FirstLevelProcess());
         return "flprocess_form";
     }
-    
-    public String show(FirstLevelProcess flProcess){
+
+    public String show(FirstLevelProcess flProcess) {
         setFlProcess(flProcess);
         setProcessChildren(processService.findAllFor(flProcess));
         setActivityChildren(activityService.findAllFor(flProcess));
         return "flprocess";
     }
-    
-    public String save(){
+
+    public String save() {
         this.flProcess.setParent(this.parentCompany);
         processService.save(flProcess);
         return showAllFor(parentCompany);
     }
-    
-    public String edit(FirstLevelProcess flp){
+
+    public String edit(FirstLevelProcess flp) {
         setFlProcess(flp);
         return "flprocess_form";
     }
-    
-    public String delete(FirstLevelProcess flp){
+
+    public String delete(FirstLevelProcess flp) {
         processService.delete(flp);
         return showAllFor(parentCompany);
     }
-    
+
 }
