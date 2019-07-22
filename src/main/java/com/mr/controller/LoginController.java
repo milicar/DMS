@@ -10,7 +10,6 @@ import com.mr.service.DocumentService;
 import com.mr.service.DocumentTypeService;
 import com.mr.service.ProcessService;
 import com.mr.service.UserService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.faces.application.FacesMessage;
@@ -35,7 +34,9 @@ public class LoginController {
     private DocumentTypeService documentTypeService;
     @Autowired
     private DocumentService documentService;
-
+    @Autowired
+    private HierarchyController hierarchyController;
+   
     private User loggedInUser;
     private String username;
     private String password;
@@ -75,7 +76,7 @@ public class LoginController {
             User qu = (User) queriedUser.get();
             if (getPassword().equals(qu.getPassword())) {
                 setLoggedInUser(qu);
-                return start();
+                return hierarchyController.start(getLoggedInUser());
             } else {
                 getFacesContextInstance().addMessage(null, new FacesMessage("Invalid password!"));
                 return "";
@@ -91,13 +92,6 @@ public class LoginController {
         return FacesContext.getCurrentInstance();
     }
 
-    protected String start() {
-        if (isAdmin()) {
-            return companyController.showAll();
-        } else {
-            return companyController.show(getLoggedInUser().getCompany()); // user service
-        }
-    }
 
     public String logout() {
         setLoggedInUser(null);
@@ -105,37 +99,26 @@ public class LoginController {
     }
 
     public List<Process> getFlProcessesForUser() {
-        return processService.findAllFor(getLoggedInUser().getCompany()); // user service // ping-pong!!
+        return hierarchyController.getFlProcessesForUser(loggedInUser); 
+       // findAllFlProcesses = processService.findAllFor(getLoggedInUser().getCompany()); // user service // ping-pong!!
     }
 
     public List<Process> getSubprocessesForUser() {
-        List<Process> subs = new ArrayList<>();
-        List<Process> flpros = getFlProcessesForUser();
-        flpros.forEach(fl -> processService.findAllFor(fl)
-                .forEach(s -> subs.add(s)));
-        return subs;
+        return hierarchyController.getSubprocessesForUser(loggedInUser);
     }
 
     public List<Activity> getActivitiesForUser() {
-        List<Activity> acts = new ArrayList<>();
-        getFlProcessesForUser().forEach(fl -> activityService.findAllFor(fl)
-                .forEach(a -> acts.add(a)));
-        getSubprocessesForUser().forEach(sub -> activityService.findAllFor(sub)
-                .forEach(a -> acts.add(a)));
-        return acts;
+        return hierarchyController.getActivitiesForUser(loggedInUser);
+       
     }
 
     public List<DocumentType> getDocTypesForUser() {
-        List<DocumentType> doctypes = new ArrayList<>();
-        getActivitiesForUser().forEach(act -> documentTypeService.findAllFor(act)
-                .forEach(dt -> doctypes.add(dt)));
-        return doctypes;
+        return hierarchyController.getDocTypesForUser(loggedInUser);
+       
     }
 
     public List<Document> getDocumentsForUser() {
-        List<Document> docs = new ArrayList<>();
-        getDocTypesForUser().forEach(dt -> documentService.findAllFor(dt)
-                .forEach(d -> docs.add(d)));
-        return docs;
+        return hierarchyController.getDocumentsForUser(loggedInUser);
+        
     }
 }
