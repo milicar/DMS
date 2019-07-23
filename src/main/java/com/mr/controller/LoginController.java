@@ -85,15 +85,6 @@ public class LoginController {
     }
     
 
-    public List<Process> getSubprocessesForUser() {
-        return hierarchyController.getSubprocessesForUser(loggedInUser);
-    }
-
-    public List<Activity> getActivitiesForUser() {
-        return hierarchyController.getActivitiesForUser(loggedInUser);
-       
-    }
-
     public List<DocumentType> getDocTypesForUser() {
         return hierarchyController.getDocTypesForUser(loggedInUser);
        

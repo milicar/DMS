@@ -41,25 +41,25 @@ public class HierarchyController {
         return processService.findAllFor(userService.getUsersCompany(loggedInUser));
     }
 
-    public List<Process> getSubprocessesForUser(User loggedInUser) {
+    public List<Process> buildListOfSubprocessesFor(User loggedInUser) {
         List<Process> subs = new ArrayList<>();
         buildListOfFirstLevelProcessesFor(loggedInUser).forEach(fl -> processService.findAllFor(fl)
                 .forEach(s -> subs.add(s)));
         return subs;
     }
 
-    public List<Activity> getActivitiesForUser(User loggedInUser) {
+    public List<Activity> buildListOfActivitiesFor(User loggedInUser) {
         List<Activity> acts = new ArrayList<>();
         buildListOfFirstLevelProcessesFor(loggedInUser).forEach(fl -> activityService.findAllFor(fl)
                 .forEach(a -> acts.add(a)));
-        getSubprocessesForUser(loggedInUser).forEach(sub -> activityService.findAllFor(sub)
+        buildListOfSubprocessesFor(loggedInUser).forEach(sub -> activityService.findAllFor(sub)
                 .forEach(a -> acts.add(a)));
         return acts;
     }
 
     public List<DocumentType> getDocTypesForUser(User loggedInUser) {
         List<DocumentType> doctypes = new ArrayList<>();
-        getActivitiesForUser(loggedInUser).forEach(act -> documentTypeService.findAllFor(act)
+        buildListOfActivitiesFor(loggedInUser).forEach(act -> documentTypeService.findAllFor(act)
                 .forEach(dt -> doctypes.add(dt)));
         return doctypes;
     }

@@ -19,13 +19,12 @@ public class SubprocessController {
     private ProcessService processService;
     @Autowired
     private ActivityService activityService;
-    
+
     private Subprocess subprocess;
     private Process parent;
     private List<Process> subprocessList;
     private List<Process> processChildren;
     private List<Activity> activityChildren;
-    
 
     public SubprocessController() {
         this.subprocess = new Subprocess();
@@ -48,8 +47,8 @@ public class SubprocessController {
     public void setParent(Process parent) {
         this.parent = parent;
     }
-    
-        public List<Process> getSubprocessList() {
+
+    public List<Process> getSubprocessList() {
         return subprocessList;
     }
 
@@ -72,21 +71,19 @@ public class SubprocessController {
     public void setActivityChildren(List<Activity> activityChildren) {
         this.activityChildren = activityChildren;
     }
-    
-      
-    
-    public String createNewFor(Process parent){
+
+    public String createNewFor(Process parent) {
         setParent(parent);
         setSubprocess(new Subprocess());
         return "subprocess_form";
     }
-    
-    public String showAllFor(Process parent){
+
+    public String showAllFor(Process parent) {
         setParent(parent);
         setSubprocessList(processService.findAllFor(parent));
         return "list_subprocesses";
     }
-      
+
     public String show(Subprocess subprocess) {
         setParent(subprocess.getParent());
         setSubprocess(subprocess);

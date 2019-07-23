@@ -3,11 +3,11 @@ package com.mr.controller;
 import com.mr.domain.Activity;
 import com.mr.domain.ActivityDocumentType;
 import com.mr.domain.DocumentType;
-import com.mr.domain.FirstLevelProcess;
 import com.mr.domain.Process;
 import com.mr.domain.User;
 import com.mr.service.ActivityService;
 import com.mr.service.DocumentTypeService;
+import com.mr.service.UserService;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,9 @@ import org.springframework.web.context.annotation.SessionScope;
 public class ActivityController {
 
     @Autowired
-    private LoginController loginController;
+    private HierarchyController hierarchyController;
+    @Autowired
+    private UserService userService;
     @Autowired
     private ActivityService activityService;
     @Autowired
@@ -29,7 +31,6 @@ public class ActivityController {
     private Activity activity;
     private List<DocumentType> inDocumentTypeList;
     private List<DocumentType> outDocumentTypeList;
-
     private Process parent;
 
     public ActivityController() {
@@ -75,6 +76,8 @@ public class ActivityController {
         this.parent = parent;
     }
 
+    
+    
     public String showAll() {
         setActivityList(activityService.findAll());
         return "list_activities";
@@ -86,9 +89,11 @@ public class ActivityController {
         return "list_activities";
     }
     
-    public String showAllFor(User loggedInUser){
-        if (loggedInUser.getUserRole().toString().equals("ADMIN")) return showAll();
-        else setActivityList(loginController.getActivitiesForUser());
+    public String showAllFor(User loggedInUser){ 
+        if (userService.isAdmin(loggedInUser)) 
+            return showAll(); 
+        else 
+            setActivityList(hierarchyController.buildListOfActivitiesFor(loggedInUser));
         return "list_activities";
     }
 

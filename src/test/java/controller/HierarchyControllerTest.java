@@ -88,7 +88,7 @@ public class HierarchyControllerTest {
         processList.add(parent);
         doReturn(processList).when(hierarchyController).buildListOfFirstLevelProcessesFor(loggedInUser);
         
-        hierarchyController.getSubprocessesForUser(loggedInUser);
+        hierarchyController.buildListOfSubprocessesFor(loggedInUser);
         verify(processService).findAllFor(parent);
 
     }
@@ -103,9 +103,9 @@ public class HierarchyControllerTest {
         subprocessList.add(subprocess);
 
         doReturn(processList).when(hierarchyController).buildListOfFirstLevelProcessesFor(loggedInUser);
-        doReturn(subprocessList).when(hierarchyController).getSubprocessesForUser(loggedInUser);
+        doReturn(subprocessList).when(hierarchyController).buildListOfSubprocessesFor(loggedInUser);
        
-        hierarchyController.getActivitiesForUser(loggedInUser);
+        hierarchyController.buildListOfActivitiesFor(loggedInUser);
         verify(activityService).findAllFor(process);
         verify(activityService).findAllFor(subprocess);
     }
@@ -118,7 +118,7 @@ public class HierarchyControllerTest {
         activityList.add(activity);
         activityList.add(activity2);
 
-        doReturn(activityList).when(hierarchyController).getActivitiesForUser(loggedInUser);
+        doReturn(activityList).when(hierarchyController).buildListOfActivitiesFor(loggedInUser);
         
         hierarchyController.getDocTypesForUser(loggedInUser);
         verify(documentTypeService, times(2)).findAllFor(any());

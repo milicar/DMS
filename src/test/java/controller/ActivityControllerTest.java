@@ -1,17 +1,17 @@
 package controller;
 
 import com.mr.controller.ActivityController;
-import com.mr.controller.LoginController;
+import com.mr.controller.HierarchyController;
 import com.mr.domain.Activity;
 import com.mr.domain.ActivityDocumentType;
 import com.mr.domain.DocumentType;
 import com.mr.domain.FirstLevelProcess;
 import com.mr.domain.Process;
-import com.mr.domain.Role;
 import com.mr.domain.Subprocess;
 import com.mr.domain.User;
 import com.mr.service.ActivityService;
 import com.mr.service.DocumentTypeService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -39,7 +39,9 @@ public class ActivityControllerTest {
     @Mock
     DocumentTypeService documentTypeService;
     @Mock
-    LoginController loginController;
+    UserService userService;
+    @Mock
+    HierarchyController hierarchyController;
     @InjectMocks @Spy
     ActivityController activityController;
     
@@ -89,7 +91,7 @@ public class ActivityControllerTest {
     @Test
     public void shouldShowAllActivitiesForAdmin() {
         User admin = new User();
-        admin.setUserRole(Role.ADMIN);
+        when(userService.isAdmin(admin)).thenReturn(Boolean.TRUE);
         
         activityController.showAllFor(admin);
         
@@ -99,14 +101,14 @@ public class ActivityControllerTest {
     @Test
     public void shouldShowActivitiesDefinedForEmployeesCompany() {
         User user = new User();
-        user.setUserRole(Role.USER);
         activityList = new ArrayList<>();
         activityList.add(new Activity());
-        when(loginController.getActivitiesForUser()).thenReturn(activityList);
+        when(userService.isAdmin(user)).thenReturn(Boolean.FALSE);
+        when(hierarchyController.buildListOfActivitiesFor(user)).thenReturn(activityList);
         
         activityController.showAllFor(user);
         
-        verify(loginController).getActivitiesForUser();
+        verify(hierarchyController).buildListOfActivitiesFor(user);
         assertEquals(activityList, activityController.getActivityList());
         assertEquals("list_activities", activityController.showAllFor(user));
     }
@@ -189,4 +191,16 @@ public class ActivityControllerTest {
         assertNotNull(activityController.getActivity());
     }
     
+    @Test
+    public void shouldInitializeActivityListOnConstruction() {
+        activityList = new ArrayList<>();
+        activityList.add(new Activity());
+        when(activityService.findAll()).thenReturn(activityList);
+        
+        activityController.init();
+        
+        verify(activityService).findAll();
+        assertEquals(activityList, activityController.getActivityList());
+        
+    }
 }
