@@ -8,6 +8,7 @@ import com.mr.domain.User;
 import com.mr.service.ActivityDocTypeService;
 import com.mr.service.DocumentTypeDescriptorService;
 import com.mr.service.DocumentTypeService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
@@ -20,7 +21,9 @@ import org.springframework.web.context.annotation.SessionScope;
 public class DocumentTypeController {
 
     @Autowired
-    private LoginController loginController;
+    HierarchyController hierarchyController;
+    @Autowired
+    UserService userService;
     @Autowired
     private DocumentTypeService documentTypeService;
     @Autowired
@@ -96,7 +99,6 @@ public class DocumentTypeController {
     }
 
     public String show(DocumentType documentType) {
-        //     setDocumentType(documentTypeService.loadDocumentType(documentType));
         setDocumentType(documentType);
         setDescriptorList(findAllForDocType(documentType));
         return "document_type";
@@ -105,20 +107,20 @@ public class DocumentTypeController {
     public String showAllFor(Activity activity, String sDirection) {
         setActivity(activity);
         setDirection(directionFromString(sDirection));
-        setDocumentTypeList(documentTypeService.findAllFor(activity, this.direction));
+        setDocumentTypeList(documentTypeService.findAllFor(activity, getDirection()));
         return "list_document_types";
     }
 
     public String save() {
-        documentTypeService.save(this.documentType);
-        adtService.save(this.activity, this.documentType, this.direction);
+        documentTypeService.save(getDocumentType());
+        adtService.save(getActivity(), getDocumentType(), getDirection());
         descriptorService.update(descriptorList, documentType);
-        return showAllFor(this.activity, stringFromDirection(this.direction));
+        return showAllFor(getActivity(), stringFromDirection(getDirection()));
     }
 
     public String delete(DocumentType documentType) {
         documentTypeService.delete(documentType);
-        return showAllFor(this.activity, stringFromDirection(this.direction));
+        return showAllFor(getActivity(), stringFromDirection(getDirection()));
     }
 
     public String edit(DocumentType documentType) {
@@ -133,8 +135,8 @@ public class DocumentTypeController {
     }
     
     public String showAllFor(User loggedInUser){
-        if (loggedInUser.getUserRole().toString().equals("ADMIN")) return showAll();
-        else setDocumentTypeList(loginController.getDocTypesForUser());
+        if (userService.isAdmin(loggedInUser)) return showAll();
+        else setDocumentTypeList(hierarchyController.buildListOfDocumentTypesFor(loggedInUser));
         return "list_document_types";
     }
 
@@ -149,13 +151,7 @@ public class DocumentTypeController {
     }
 
     private String stringFromDirection(ActivityDocumentType.Direction direction) {
-        if (direction == ActivityDocumentType.Direction.IN) {
-            return "IN";
-        } else if (direction == ActivityDocumentType.Direction.OUT) {
-            return "OUT";
-        } else {
-            return null;
-        }
+        return direction.toString();
     }
 
     /* descriptors */
@@ -189,7 +185,7 @@ public class DocumentTypeController {
 
     public String addDescriptor(String descriptorName) {
         descriptor.setDescriptorName(descriptorName);
-        descriptor.setDocumentType(this.getDocumentType());
+        descriptor.setDocumentType(getDocumentType());
         descriptorList.add(descriptor);
         descriptor = new DocumentTypeDescriptor();
         return "document_type_form";

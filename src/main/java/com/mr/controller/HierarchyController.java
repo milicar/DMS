@@ -57,7 +57,7 @@ public class HierarchyController {
         return acts;
     }
 
-    public List<DocumentType> getDocTypesForUser(User loggedInUser) {
+    public List<DocumentType> buildListOfDocumentTypesFor(User loggedInUser) {
         List<DocumentType> doctypes = new ArrayList<>();
         buildListOfActivitiesFor(loggedInUser).forEach(act -> documentTypeService.findAllFor(act)
                 .forEach(dt -> doctypes.add(dt)));
@@ -66,7 +66,7 @@ public class HierarchyController {
 
     public List<Document> getDocumentsForUser(User loggedInUser) {
         List<Document> docs = new ArrayList<>();
-        getDocTypesForUser(loggedInUser).forEach(dt -> documentService.findAllFor(dt)
+        buildListOfDocumentTypesFor(loggedInUser).forEach(dt -> documentService.findAllFor(dt)
                 .forEach(d -> docs.add(d)));
         return docs;
     }

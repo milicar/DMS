@@ -120,7 +120,7 @@ public class HierarchyControllerTest {
 
         doReturn(activityList).when(hierarchyController).buildListOfActivitiesFor(loggedInUser);
         
-        hierarchyController.getDocTypesForUser(loggedInUser);
+        hierarchyController.buildListOfDocumentTypesFor(loggedInUser);
         verify(documentTypeService, times(2)).findAllFor(any());
     }
 
@@ -131,7 +131,7 @@ public class HierarchyControllerTest {
         docTypeList.add(documentType);
         docTypeList.add(documentType);
 
-        doReturn(docTypeList).when(hierarchyController).getDocTypesForUser(loggedInUser);
+        doReturn(docTypeList).when(hierarchyController).buildListOfDocumentTypesFor(loggedInUser);
        
         hierarchyController.getDocumentsForUser(loggedInUser);
         verify(documentService, times(2)).findAllFor(documentType);

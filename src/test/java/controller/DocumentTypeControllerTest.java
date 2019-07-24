@@ -1,16 +1,16 @@
 package controller;
 
 import com.mr.controller.DocumentTypeController;
-import com.mr.controller.LoginController;
+import com.mr.controller.HierarchyController;
 import com.mr.domain.Activity;
 import com.mr.domain.ActivityDocumentType;
 import com.mr.domain.DocumentType;
 import com.mr.domain.DocumentTypeDescriptor;
-import com.mr.domain.Role;
 import com.mr.domain.User;
 import com.mr.service.ActivityDocTypeService;
 import com.mr.service.DocumentTypeDescriptorService;
 import com.mr.service.DocumentTypeService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -37,13 +37,15 @@ public class DocumentTypeControllerTest {
     private ActivityDocumentType.Direction direction;
     
     @Mock
+    UserService userService;
+    @Mock
     DocumentTypeService documentTypeService;
     @Mock
     DocumentTypeDescriptorService dtdescriptorService;
     @Mock
     ActivityDocTypeService activityDocTypeService;
     @Mock
-    LoginController loginController;
+    HierarchyController hierarchyController;
     @InjectMocks
     @Spy
     DocumentTypeController documentTypeController;
@@ -170,7 +172,7 @@ public class DocumentTypeControllerTest {
     @Test
     public void shouldShowAllDocumentTypesToAdmin() {
         User loggedInUser = new User();
-        loggedInUser.setUserRole(Role.ADMIN);
+        when(userService.isAdmin(loggedInUser)).thenReturn(Boolean.TRUE);
         
         documentTypeController.showAllFor(loggedInUser);
         
@@ -180,12 +182,12 @@ public class DocumentTypeControllerTest {
     @Test
     public void shouldShowDocumentTypesDefinedWithinEmployeesCompany() {
         User loggedInUser = new User();
-        loggedInUser.setUserRole(Role.USER);
-        when(loginController.getDocTypesForUser()).thenReturn(documentTypeList);
+        when(userService.isAdmin(loggedInUser)).thenReturn(Boolean.FALSE);
+        when(hierarchyController.buildListOfDocumentTypesFor(loggedInUser)).thenReturn(documentTypeList);
         
         documentTypeController.showAllFor(loggedInUser);
         
-        verify(loginController).getDocTypesForUser();
+        verify(hierarchyController).buildListOfDocumentTypesFor(loggedInUser);
         assertEquals(documentTypeList, documentTypeController.getDocumentTypeList());
         assertEquals("list_document_types", documentTypeController.showAllFor(loggedInUser));
     }

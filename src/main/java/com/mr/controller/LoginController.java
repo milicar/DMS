@@ -85,11 +85,6 @@ public class LoginController {
     }
     
 
-    public List<DocumentType> getDocTypesForUser() {
-        return hierarchyController.getDocTypesForUser(loggedInUser);
-       
-    }
-
     public List<Document> getDocumentsForUser() {
         return hierarchyController.getDocumentsForUser(loggedInUser);
         
