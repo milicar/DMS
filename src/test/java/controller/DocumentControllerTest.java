@@ -1,15 +1,15 @@
 package controller;
 
 import com.mr.controller.DocumentController;
-import com.mr.controller.LoginController;
+import com.mr.controller.HierarchyController;
 import com.mr.domain.Document;
 import com.mr.domain.DocumentDescriptor;
 import com.mr.domain.DocumentTag;
 import com.mr.domain.DocumentType;
 import com.mr.domain.DocumentTypeDescriptor;
-import com.mr.domain.Role;
 import com.mr.domain.User;
 import com.mr.service.DocumentService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -38,7 +38,9 @@ public class DocumentControllerTest {
     @Mock
     DocumentService documentService;
     @Mock
-    LoginController loginController;
+    UserService userService;
+    @Mock
+    HierarchyController hierarchyController;
     @InjectMocks
     @Spy
     DocumentController documentController;
@@ -100,7 +102,7 @@ public class DocumentControllerTest {
     @Test
     public void shouldShowAllDocumentsToAdmin() {
         User admin = new User();
-        admin.setUserRole(Role.ADMIN);
+        when(userService.isAdmin(admin)).thenReturn(Boolean.TRUE);
 
         documentController.showAllFor(admin);
 
@@ -110,12 +112,12 @@ public class DocumentControllerTest {
     @Test
     public void shouldShowOnlyCompanyDocumentsToEmployees() {
         User user = new User();
-        user.setUserRole(Role.USER);
-        when(loginController.getDocumentsForUser()).thenReturn(documentList);
+        when(userService.isAdmin(user)).thenReturn(Boolean.FALSE);
+        when(hierarchyController.BuildListOfDocumentsFor(user)).thenReturn(documentList);
 
         documentController.showAllFor(user);
 
-        verify(loginController).getDocumentsForUser();
+        verify(hierarchyController).BuildListOfDocumentsFor(user);
         assertEquals(documentList, documentController.getDocumentList());
         assertEquals("list_documents", documentController.showAllFor(user));
     }

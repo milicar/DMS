@@ -133,7 +133,7 @@ public class HierarchyControllerTest {
 
         doReturn(docTypeList).when(hierarchyController).buildListOfDocumentTypesFor(loggedInUser);
        
-        hierarchyController.getDocumentsForUser(loggedInUser);
+        hierarchyController.BuildListOfDocumentsFor(loggedInUser);
         verify(documentService, times(2)).findAllFor(documentType);
     }
 

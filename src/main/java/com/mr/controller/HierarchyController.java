@@ -13,21 +13,25 @@ import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.annotation.SessionScope;
 
+@SessionScope
+@Controller
 public class HierarchyController {
 
     @Autowired
-    CompanyController companyController;
+    private CompanyController companyController;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ProcessService processService;
+    private ProcessService processService;
     @Autowired
-    ActivityService activityService;
+    private ActivityService activityService;
     @Autowired
-    DocumentTypeService documentTypeService;
+    private DocumentTypeService documentTypeService;
     @Autowired
-    DocumentService documentService;
+    private DocumentService documentService;
 
     public String start(User loggedInUser) {
         if (userService.isAdmin(loggedInUser)) {
@@ -64,7 +68,7 @@ public class HierarchyController {
         return doctypes;
     }
 
-    public List<Document> getDocumentsForUser(User loggedInUser) {
+    public List<Document> BuildListOfDocumentsFor(User loggedInUser) {
         List<Document> docs = new ArrayList<>();
         buildListOfDocumentTypesFor(loggedInUser).forEach(dt -> documentService.findAllFor(dt)
                 .forEach(d -> docs.add(d)));

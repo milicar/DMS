@@ -8,7 +8,7 @@ import com.mr.domain.DocumentTypeDescriptor;
 import com.mr.domain.User;
 import com.mr.service.DocumentDescriptorService;
 import com.mr.service.DocumentService;
-import com.mr.service.DocumentTypeService;
+import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,9 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
     @Autowired
-    private LoginController loginController;
+    UserService userService;
+    @Autowired
+    HierarchyController hierarchyController;
     @Autowired
     private DocumentDescriptorService ddService;
 
@@ -114,9 +116,11 @@ public class DocumentController {
     }
     
     public String showAllFor(User loggedInUser){
-        if (loggedInUser.getUserRole().toString().equals("ADMIN")) return showAll();
-        else setDocumentList(loginController.getDocumentsForUser());
-        return "list_documents";
+        if (userService.isAdmin(loggedInUser)) return showAll();
+        else {
+            setDocumentList(hierarchyController.BuildListOfDocumentsFor(loggedInUser));
+            return "list_documents";
+        }
     }
 
     public String delete(Document document) {

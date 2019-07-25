@@ -1,12 +1,7 @@
 package com.mr.controller;
 
-import com.mr.domain.Activity;
-import com.mr.domain.Document;
-import com.mr.domain.DocumentType;
-import com.mr.domain.Process;
 import com.mr.domain.User;
 import com.mr.service.UserService;
-import java.util.List;
 import java.util.Optional;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -82,11 +77,5 @@ public class LoginController {
     public String logout() {
         setLoggedInUser(null);
         return "index";
-    }
-    
-
-    public List<Document> getDocumentsForUser() {
-        return hierarchyController.getDocumentsForUser(loggedInUser);
-        
     }
 }
