@@ -8,13 +8,13 @@ import com.mr.domain.DocumentTag;
 import com.mr.domain.DocumentType;
 import com.mr.domain.DocumentTypeDescriptor;
 import com.mr.domain.User;
+import com.mr.service.DocumentDescriptorService;
 import com.mr.service.DocumentService;
 import com.mr.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,9 +34,12 @@ public class DocumentControllerTest {
     private DocumentTag tag;
     private List<DocumentTag> tagList;
     private List<DocumentDescriptor> descriptorList;
+    private User author;
 
     @Mock
     DocumentService documentService;
+    @Mock
+    DocumentDescriptorService ddService;
     @Mock
     UserService userService;
     @Mock
@@ -61,6 +64,27 @@ public class DocumentControllerTest {
         assertEquals(dtDescriptorList.size(), documentController.getDescriptorList().size());
         assertEquals(dtDescriptorList.get(0),
                 documentController.getDescriptorList().get(0).getDocumentTypeDescriptor());
+        assertEquals("document_form", documentController.createNewFor(documentType));
+    }
+    @Test
+    public void shouldCreateNewDocumentOfADocumentTypeForAuthor() {
+        author = new User();
+        documentType = new DocumentType();
+        DocumentTypeDescriptor dtDescriptor = new DocumentTypeDescriptor();
+        List<DocumentTypeDescriptor> dtDescriptorList = new ArrayList<>();
+        dtDescriptorList.add(dtDescriptor);
+        documentType.setDocumentTypeDescriptors(dtDescriptorList);
+
+        documentController.createNewFor(documentType, author);
+
+        assertNotNull(documentController.getDocument());
+        assertEquals(documentType, documentController.getDocumentType());
+        assertNotNull(documentController.getTagList());
+        assertEquals(dtDescriptorList.size(), documentController.getDescriptorList().size());
+        assertEquals(dtDescriptorList.get(0),
+                documentController.getDescriptorList().get(0).getDocumentTypeDescriptor());
+        assertEquals(author, documentController.getAuthor());
+        assertEquals(author, documentController.getDocument().getAuthor());
         assertEquals("document_form", documentController.createNewFor(documentType));
     }
 
@@ -144,6 +168,9 @@ public class DocumentControllerTest {
     
     @Test
     public void shouldEditADocument() {
+        document = new Document();
+        author = new User();
+        document.setAuthor(author);
         when(documentService.findDescriptorsFor(document)).thenReturn(descriptorList);
         when(documentService.findTagsFor(document)).thenReturn(tagList);
         
@@ -155,17 +182,27 @@ public class DocumentControllerTest {
         assertEquals(descriptorList, documentController.getDescriptorList());
         assertEquals(tagList, documentController.getTagList());
         assertEquals("document_form", documentController.edit(document));
+        assertEquals(author, documentController.getAuthor());
     }
     
     @Test
     public void shouldSaveADocument() {
         documentController.setDocument(document);
         documentController.setDocumentType(documentType);
+        descriptorList = new ArrayList<>();
+        DocumentDescriptor dd = new DocumentDescriptor();
+        descriptorList.add(dd);
+        tagList = new ArrayList<>();
+        tag = new DocumentTag();
+        tagList.add(tag);
+        documentController.setDescriptorList(descriptorList);
+        documentController.setTagList(tagList);
         
         documentController.save();
         
         verify(documentService).save(document);
-        verify(documentService).save(any());
+        verify(ddService).save(dd);
+        verify(documentService).addTag(tag.getTagValue(), document);
         verify(documentController).showAllFor(documentType);
     }
     
@@ -181,24 +218,37 @@ public class DocumentControllerTest {
         assertEquals(tagList, documentController.getTagList());
     }
     
+//    @Test @Ignore
+//    public void shouldAddATagToADocument() {
+//        documentController.setDocument(document);
+//        String tagValue = "tag";
+//        tag = new DocumentTag();
+//        tag.setTagValue(tagValue);
+//        tag.setDocument(document);
+//        tagList = new ArrayList<>();
+//        tagList.add(tag);
+//        when(documentService.findTagsFor(document)).thenReturn(tagList);
+//        assertTrue(documentController.getTagList().isEmpty());
+//        
+//        documentController.addTag(tagValue);
+//   
+//        verify(documentService).addTag(tagValue, document);
+//        verify(documentService).findTagsFor(document);
+//        assertEquals(tagList, documentController.getTagList());
+//        assertEquals(1, documentController.getTagList().size());
+//        assertEquals("document_form", documentController.addTag(tagValue));
+//    }
+    
     @Test
-    public void shouldAddATagToADocument() {
-        documentController.setDocument(document);
+    public void shouldAddTagToTagList() {
         String tagValue = "tag";
-        tag = new DocumentTag();
-        tag.setTagValue(tagValue);
-        tag.setDocument(document);
         tagList = new ArrayList<>();
-        tagList.add(tag);
-        when(documentService.findTagsFor(document)).thenReturn(tagList);
-        assertTrue(documentController.getTagList().isEmpty());
+        assertEquals(0, tagList.size());
         
         documentController.addTag(tagValue);
-   
-        verify(documentService).addTag(tagValue, document);
-        verify(documentService).findTagsFor(document);
-        assertEquals(tagList, documentController.getTagList());
-        assertEquals(1, documentController.getTagList().size());
+        
+        verify(documentController).addTag(any());
+        assertEquals(tagValue, documentController.getTagList().get(0).getTagValue());
         assertEquals("document_form", documentController.addTag(tagValue));
     }
     

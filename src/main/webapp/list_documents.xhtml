@@ -12,7 +12,8 @@
 
                 <h:form id="documentList">
                     <p:panel header="Documents of type: #{documentController.documentType.name}">
-                        <h:commandButton id="addDocumentButton" action="#{documentController.createNewFor(documentController.documentType)}" 
+                        <h:commandButton id="addDocumentButton" 
+                                         action="#{documentController.createNewFor(documentController.documentType, loginController.loggedInUser)}" 
                                          value="Add document"/>
                         <p:dataTable id="table" var="doc" value="#{documentController.documentList}">
 

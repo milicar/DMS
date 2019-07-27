@@ -27,9 +27,10 @@
                             <p:inputText id="location" value="#{documentController.document.documentLocation}"
                                          required="true" requiredMessage="Please provide document location."/>
                             <h:message for="location"/>
-                            <p:outputLabel value="Author: "/>
+<!--                            <p:outputLabel value="Author: "/>
+                            <p:outputLabel value="Name: #{loginController.loggedInUser}" />
                             <p:inputText value="#{documentController.document.author.firstName}"/>
-                            <p:inputText value="#{documentController.document.author.lastName}"/>
+                            <p:inputText value="#{documentController.document.author.lastName}"/>-->
 
                             <c:choose>
                                 <c:when test="#{documentController.descriptorList.size() > 0}">

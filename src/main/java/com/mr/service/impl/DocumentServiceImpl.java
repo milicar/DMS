@@ -72,10 +72,21 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document addTag(String tagValue, Document document) {
-        DocumentTag newTag = new DocumentTag();
-        newTag.setDocument(document);
-        newTag.setTagValue(tagValue);
-        tagDao.save(newTag);
+        List<DocumentTag> documentTagList = findTagsFor(document);
+
+        boolean contains = false;
+        for (DocumentTag tag : documentTagList) {
+            if (tagValue.equals(tag.getTagValue())) {
+                contains = true;
+                break;
+            }
+        }
+        if (!contains) {
+            DocumentTag newTag = new DocumentTag();
+            newTag.setDocument(document);
+            newTag.setTagValue(tagValue);
+            tagDao.save(newTag);
+        }
         document.setTagList(findTagsFor(document));
         return document;
     }

@@ -33,6 +33,16 @@ public class DocumentController {
     private DocumentType documentType;
     private List<DocumentTag> tagList;
     private List<DocumentDescriptor> descriptorList;
+    private User author;
+    
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
    
     public DocumentController() {
@@ -93,6 +103,19 @@ public class DocumentController {
         document.setDocumentDescriptorList(this.descriptorList);
         return "document_form";
     }
+    
+    public String createNewFor(DocumentType documentType, User author) {
+        setDocument(new Document());
+        setDocumentType(documentType);
+        document.setDocumentType(documentType);
+        setTagList(new ArrayList());
+        document.setTagList(this.tagList);
+        setDescriptorList(initializeDescriptorsFor(this.document));
+        document.setDocumentDescriptorList(this.descriptorList);
+        setAuthor(author);
+        document.setAuthor(author);
+        return "document_form";
+    }
 
     public String showAllFor(DocumentType documentType) {
         setDocumentType(documentType);
@@ -103,7 +126,6 @@ public class DocumentController {
    
     public String show(Document document) {
         setDocument(document);
-        //       setDocument(documentService.loadDocument(document));
         setTagList(documentService.findTagsFor(document));
         setDescriptorList(documentService.findDescriptorsFor(document));
         return "document";
@@ -137,21 +159,16 @@ public class DocumentController {
         setDocument(document);
         setDescriptorList(documentService.findDescriptorsFor(document));
         setTagList(documentService.findTagsFor(document));
+        setAuthor(document.getAuthor());
         return "document_form";
     }
 
    
     public String save() {
         documentService.save(document);
-        descriptorList.forEach(desc -> ddService.save(desc));
-    //    tagList.forEach(tag -> documentService.addTag(tag.getTagValue(), document));
-        
-        //ddService.update(descriptorList, document);
-        
-        
-        //documentType = document.getDocumentType();
-        //descriptorService.update(descriptorList, documentType);
-        //descriptorList = new ArrayList<>();
+        descriptorList.forEach(desc -> ddService.save(desc));    
+        tagList.forEach(tag -> documentService.addTag(tag.getTagValue(), document));
+    
         return showAllFor(documentType);
     }
 
@@ -163,10 +180,8 @@ public class DocumentController {
     public String addTag(String tagValue){
         DocumentTag tag = new DocumentTag();
         tag.setTagValue(tagValue);
-        tag.setDocument(this.document);
-        documentService.addTag(tagValue, document);
-        setTagList(documentService.findTagsFor(document));
-        tag = new DocumentTag();
+        tag.setDocument(getDocument());
+        getTagList().add(tag);
         return "document_form";
     }
     

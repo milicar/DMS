@@ -38,7 +38,7 @@
 
                                 <h:commandButton id="deleteDocTypeButton" rendered="#{loginController.admin}" value="Delete Document Type" action="#{documentTypeController.delete(dType)}" />
 
-                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNewFor(dType)}"/>
+                                <h:commandButton id='createDocumentButton' value='New Document' action="#{documentController.createNewFor(dType, loginController.loggedInUser)}"/>
                                 <h:commandButton id='showAllDocuments' value='All Documents' action="#{documentController.showAllFor(dType)}"/>
                             </h:panelGrid>
                         </p:panelGrid>
