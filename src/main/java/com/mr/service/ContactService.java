@@ -12,7 +12,7 @@ public interface ContactService {
     
     Contact findById(Long id);
     
-    //List<Contact> findAllFor(Company company);
+    List<Contact> findAllFor(Company company);
     
     Contact save(Contact contact);
     

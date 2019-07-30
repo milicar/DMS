@@ -12,7 +12,7 @@
 
                 <h:form id="usersList">
                     <p:panel header="All Users">
-                        <h:commandButton id="addUserButton" action="#{userController.createNewFor(userController.user.company)}" value="Add user"/>
+                        <h:commandButton id="addUserButton" action="#{userController.createNew()}" value="Add user"/>
                         <p:dataTable id="table" var="emp" value="#{userController.userList}">
 
                             <p:column headerText="# ID">

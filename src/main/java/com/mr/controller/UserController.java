@@ -21,9 +21,7 @@ public class UserController {
     
     private User user;
     private List<User> userList;
-    private Company company;
-    private Long compName;
-    private List<Company> companies;
+    private String companyIdString;
 
     public UserController() {
     }
@@ -33,7 +31,6 @@ public class UserController {
     @PostConstruct
     public void init(){
         userList = userService.findAll();
-        companies = companyService.findAll();
     }
 
     public User getUser() {
@@ -52,63 +49,49 @@ public class UserController {
         this.userList = userList;
     }
 
-    public Company getCompany() {
-        return company;
+    public String getCompanyIdString() {
+        return companyIdString;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public Long getCompName() {
-        return compName;
-    }
-
-    public void setCompName(Long compName) {
-        this.compName = compName;
-    }
-
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
+    public void setCompanyIdString(String companyIdString) {
+        this.companyIdString = companyIdString;
     }
     
+    private Company getCompanyFromId(String companyIdString) {
+        return companyService.findById(Long.parseLong(companyIdString));
+    }
+  
      
     
     
    
-    public String createNewFor(Company company){
-        setCompany(company);
+    
+    public String createNew(){
+        setCompanyIdString("0");
         setUser(new User());
         return "user_form";
-    } 
+    }
     
     public String show(User user){
         setUser(user);
-        setCompany(user.getCompany());
         return "user";
     }
     
     public String edit(User user){
         setUser(user);
-        setCompany(company);
+        setCompanyIdString(user.getCompany().getCompanyID().toString());
         return "user_form";
     }
     
     public String save(){
-       // this.user.setCompany(companyService.findById(compName));
+        this.user.setCompany(getCompanyFromId(companyIdString));
         userService.save(user);
-        setUserList(userService.findAllFor(company));
-        return "list_users";
+        return showAll();
     }
     
     public String delete(User user){
         userService.delete(user);
-        setUserList(userService.findAllFor(company));
-        return "list_users";
+        return showAll();
     }
     
     public String showAll(){
@@ -116,9 +99,4 @@ public class UserController {
         return "list_users";
     }
 
-//    private Company convertStringToCompany(String compName) {
-//        List<Company> companies = companyService.findAll();
-//        if("Company1".equals(compName)) return companies.get(0);
-//        else return companies.get(1);
-//    }
 }

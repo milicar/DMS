@@ -2,7 +2,8 @@
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
-        xmlns:p="http://primefaces.org/ui">
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Contacts</title>
     </h:head>
@@ -15,37 +16,45 @@
                         <h:commandButton id="addContactButton" rendered="#{loginController.admin}"
                                          action="#{contactController.createNew()}" 
                                          value="Add contact"/>
-                        <p:dataTable id="table" var="cont" value="#{contactController.contactList}">
+                        <p:dataTable id="table" var="conta" value="#{contactController.contactList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{cont.contactID}" />
+                                <h:outputText value="#{conta.contactID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink styleClass="viewOne" action="#{contactController.show(cont)}">
-                                    <h:outputText value="#{cont.contactName}" />
+                                <h:commandLink styleClass="viewOne" action="#{contactController.show(conta)}">
+                                    <h:outputText value="#{conta.contactName}" />
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Information">
-                                <h:outputText value="#{cont.contactInfo}" />
+                                <h:outputText value="#{conta.contactInfo}" />
                             </p:column>
 
                             <p:column headerText="Address">
-                                <h:outputText value="#{cont.contactAddress}" />
+                                <h:outputText value="#{conta.contactAddress}" />
                             </p:column>
-                            
+
                             <p:column headerText="Email">
-                                <h:outputText value="#{cont.contactEmail}" />
+                                <h:outputText value="#{conta.contactEmail}" />
                             </p:column>
+
+                            <c:choose>
+                                <c:when test="#{loginController.admin}">
+                                    <p:column headerText="Company">
+                                        <h:outputText value="#{conta.company.companyName}" />
+                                    </p:column>
+                                </c:when>
+                            </c:choose>
 
                             <p:column headerText="Action" rendered="#{loginController.admin}">
                                 <h:commandButton id="deleteOneContactButton"
-                                                 action="#{contactController.delete(cont)}"
+                                                 action="#{contactController.delete(conta)}"
                                                  value="Delete" />
-                            
+
                                 <h:commandButton id="editOneContactButton"
-                                                 action="#{contactController.edit(cont)}"
+                                                 action="#{contactController.edit(conta)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

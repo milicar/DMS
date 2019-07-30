@@ -6,7 +6,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:view>
         <h:head>
             <meta charset="utf-8" />
@@ -37,40 +38,43 @@
             </style>
         </h:head>
         <h:body>
-                <div>
-                    <p:growl for="errors" showDetail="true"/>
-                </div>
-                <div class="top content">
-                    <ui:insert name="top">
-                        <p:panel>
-                            <p:outputLabel value="Welcome #{loginController.loggedInUser.username}" style="padding-right: 10px"/>
-                            <p:commandButton value="Log out" action="#{loginController.logout()}"/>
-                        </p:panel>
-                    </ui:insert>
-                </div>
-                <div class="left content">
-                    <ui:insert name="left">
-                    <p:toolbar>
-                        <f:facet name="left">
-                            <p:commandButton action="#{companyController.showAll}" value="Companies" rendered="#{loginController.admin}"/><br/>
-                            <p:commandButton action="#{flProcessController.showAllFor(loginController.loggedInUser)}" value="Processes" /><br/>
-                            <p:commandButton action="#{activityController.showAllFor(loginController.loggedInUser)}" value="Activities" /><br/>
-                            <!--<p:button href="list_activities.xhtml" value="Activities" /><br/>-->
-                            <p:commandButton action="#{documentTypeController.showAllFor(loginController.loggedInUser)}" value="DocumentTypes" /><br/>
-                            <!--<p:button href="list_document_types.xhtml" value="Document Types" /><br/>-->
-                            <p:commandButton action="#{documentController.showAllFor(loginController.loggedInUser)}" value="Documents" /><br/>
-                            <p:commandButton action="#{contactController.showAll()}" value="Contacts" /><br/>
-                            <p:commandButton action="#{userController.showAll()}" value="Users" /><br/>
-                            <!--<p:button href="list_documents.xhtml" value="Documents" /><br/>-->
-                            <!--<p:button href="list_contacts.xhtml" value="Contacts" />-->
-                            <!--<p:button href="list_users.xhtml" value="Users" rendered="#{loginController.admin}"/>-->
-                        </f:facet>
-                    </p:toolbar>
-                    </ui:insert>
-                </div>
-                <div class="default content">
-                    <ui:insert name="content">Default content</ui:insert>
-                </div>
+            <div>
+                <p:growl for="errors" showDetail="true"/>
+            </div>
+            <div class="top content">
+                <ui:insert name="top">
+                    <p:panel>
+                        <p:outputLabel value="Welcome #{loginController.loggedInUser.username}" style="padding-right: 10px"/>
+                        <p:commandButton value="Log out" action="#{loginController.logout()}"/>
+                    </p:panel>
+                </ui:insert>
+            </div>
+            <div class="left content">
+                <ui:insert name="left">
+                    <p:panel>
+                        <c:choose>
+                            <c:when test="#{loginController.admin}">
+                                <p:commandLink action="#{companyController.showAll}" value="Companies" rendered="#{loginController.admin}"/><br/>
+                            </c:when>
+                        </c:choose>
+                        <p:commandLink action="#{flProcessController.showAllFor(loginController.loggedInUser)}" value="Processes" /><br/>
+                        <p:commandLink action="#{activityController.showAllFor(loginController.loggedInUser)}" value="Activities" /><br/>
+                        <p:commandLink action="#{documentTypeController.showAllFor(loginController.loggedInUser)}" value="DocumentTypes" /><br/>
+                        <p:commandLink action="#{documentController.showAllFor(loginController.loggedInUser)}" value="Documents" /><br/>
+                        <p:commandLink action="#{contactController.showAllFor(loginController.loggedInUser)}" value="Contacts" /><br/>
+                        <c:choose>
+                            <c:when test="#{loginController.admin}">
+                                <p:commandLink action="#{userController.showAll()}" value="Users" rendered="#{loginController.admin}"/><br/>
+                            </c:when>
+                        </c:choose>
+
+                    </p:panel>
+
+                </ui:insert>
+            </div>
+            <div class="default content">
+                <ui:insert name="content">Default content</ui:insert>
+            </div>
         </h:body>
     </f:view>
 </html>

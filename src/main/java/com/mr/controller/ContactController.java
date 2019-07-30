@@ -1,7 +1,11 @@
 package com.mr.controller;
 
+import com.mr.domain.Company;
 import com.mr.domain.Contact;
+import com.mr.domain.User;
+import com.mr.service.CompanyService;
 import com.mr.service.ContactService;
+import com.mr.service.UserService;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +17,15 @@ import org.springframework.web.context.annotation.SessionScope;
 public class ContactController {
 
     @Autowired
+    CompanyService companyService;
+    @Autowired 
+    private UserService userService;    
+    @Autowired
     private ContactService contactService;
     
     private List<Contact> contactList;
     private Contact contact;
+    private String companyIdString;
 
     public Contact getContact() {
         return contact;
@@ -33,13 +42,34 @@ public class ContactController {
     public void setContactList(List<Contact> contactList) {
         this.contactList = contactList;
     }
+
+    public String getCompanyIdString() {
+        return companyIdString;
+    }
+
+    public void setCompanyIdString(String companyIdString) {
+        this.companyIdString = companyIdString;
+    }
     
+    private Company getCompanyFromId(String companyIdString){
+        return companyService.findById(Long.parseLong(companyIdString));
+    }
+        
     public String showAll(){
         setContactList(contactService.findAll());
         return "list_contacts";
     }
+    
+    public String showAllFor(User loggedInUser){
+        if (userService.isAdmin(loggedInUser)) return showAll();
+        else {
+            setContactList(contactService.findAllFor(userService.getUsersCompany(loggedInUser)));
+            return "list_contacts";
+        }
+    }
 
     public String createNew() {
+        setCompanyIdString("0");
         setContact(new Contact());
         return "contact_form";
     }
@@ -51,19 +81,19 @@ public class ContactController {
 
     public String edit(Contact contact){
         setContact(contact);
+        setCompanyIdString(contact.getCompany().getCompanyID().toString());
         return "contact_form";
     }
     
     public String save(){
+        this.contact.setCompany(getCompanyFromId(companyIdString));
         contactService.save(contact);
-        setContactList(contactService.findAll());
-        return "list_contacts";
+        return showAll();
     }
     
     public String delete(Contact contact){
         contactService.delete(contact);
-        setContactList(contactService.findAll());
-        return "list_contacts";
+        return showAll();
     }
 
     @PostConstruct

@@ -6,12 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Contact implements Serializable{
+public class Contact implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contact_id")
     private Long contactID;
     @Column(name = "contact_name")
@@ -23,6 +26,9 @@ public class Contact implements Serializable{
     private String contactAddress;
     @Column(name = "contact_email")
     private String contactEmail;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Contact() {
     }
@@ -66,6 +72,13 @@ public class Contact implements Serializable{
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-    
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
     
 }

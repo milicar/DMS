@@ -31,7 +31,15 @@
 
                             <p:outputLabel value="Address: "/>
                             <p:inputText value="#{contactController.contact.contactAddress}"/>
-                           
+                            
+                            <p:outputLabel value="Contact for:"/>
+                            <p:selectOneMenu id="chooseCompany" value="#{contactController.companyIdString}"
+                                             required="true" requiredMessage="Please select company.">
+                                <f:selectItem itemLabel="Select Company" itemValue="#{null}"/>
+                                <f:selectItems value="#{companyController.companyList}" var="cy"
+                                               itemLabel="#{cy.companyName}" itemValue="#{cy.companyID}"/>
+                            </p:selectOneMenu>
+                            <h:message for="chooseCompany"/>
                             <h:commandButton value="Save" action="#{contactController.save()}"/>
                         </h:panelGrid>
 

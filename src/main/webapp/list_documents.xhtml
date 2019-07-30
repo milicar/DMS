@@ -15,33 +15,33 @@
                         <h:commandButton id="addDocumentButton" 
                                          action="#{documentController.createNewFor(documentController.documentType, loginController.loggedInUser)}" 
                                          value="Add document"/>
-                        <p:dataTable id="table" var="doc" value="#{documentController.documentList}">
+                        <p:dataTable id="table" var="docu" value="#{documentController.documentList}">
 
                             <p:column headerText="# ID">
-                                <h:outputText value="#{doc.documentID}" />
+                                <h:outputText value="#{docu.documentID}" />
                             </p:column>
 
                             <p:column headerText="Name">
-                                <h:commandLink styleClass="viewOne" action="#{documentController.show(doc)}">
-                                    <h:outputText value="#{doc.documentName}" />
+                                <h:commandLink styleClass="viewOne" action="#{documentController.show(docu)}">
+                                    <h:outputText value="#{docu.documentName}" />
                                 </h:commandLink>
                             </p:column>
 
                             <p:column headerText="Location">
-                                <h:outputText value="#{doc.documentLocation}" />
+                                <h:outputText value="#{docu.documentLocation}" />
                             </p:column>
 
                             <p:column headerText="Author">
-                                <h:outputText value="#{doc.author.firstName} #{doc.author.lastName}" />
+                                <h:outputText value="#{docu.author.firstName} #{docu.author.lastName}" />
                             </p:column>
 
                             <p:column headerText="Action">
                                 <h:commandButton id="deleteOneDocTypeButton"
-                                                 action="#{documentController.delete(doc)}"
+                                                 action="#{documentController.delete(docu)}"
                                                  value="Delete" />
                             
                                 <h:commandButton id="editOneDocTypeButton"
-                                                 action="#{documentController.edit(doc)}"
+                                                 action="#{documentController.edit(docu)}"
                                                  value="Edit" />
                             </p:column>
                         </p:dataTable>

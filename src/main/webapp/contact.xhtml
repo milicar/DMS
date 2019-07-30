@@ -23,6 +23,11 @@
                                 <p:outputLabel id="info" value="Info: #{contactController.contact.contactInfo}"/>
                                 <p:outputLabel id="email" value="Email: #{contactController.contact.contactEmail}"/>
                                 <p:outputLabel id="address" value="Address: #{contactController.contact.contactAddress}"/>
+                                <c:choose>
+                                    <c:when test="#{loginController.admin}">
+                                        <p:outputLabel id="company" value="Company: #{contactController.company.companyName}"/>
+                                    </c:when>
+                                </c:choose>
 
                             </h:panelGrid>
                             <h:panelGrid columns="1">

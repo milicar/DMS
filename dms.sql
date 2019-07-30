@@ -104,11 +104,11 @@ CREATE TABLE `contact` (
 
 /*Data for the table `contact` */
 
-insert into `contact`(`contact_id`,`contact_name`,`contact_info`,`contact_address`,`contact_email`) values
-(1,'Contact1','Contact1 info','contact1 address','contact1@somecompany.com'),
-(2,'Contact2','Contact2 info','contact2 address','contact2@othercompany.com'),
-(3,'Contact3','Contact3 info','contact3 address','contact3@supercompany.com'),
-(4,'Contact4','Contact4 info','contact4 address','contact4@amazingcompany.com');
+insert into `contact`(`contact_id`,`contact_name`,`contact_info`,`contact_address`,`contact_email`, `company_id`) values
+(1,'Contact1','Contact1 info','contact1 address','contact1@somecompany.com', 1),
+(2,'Contact2','Contact2 info','contact2 address','contact2@othercompany.com', 2),
+(3,'Contact3','Contact3 info','contact3 address','contact3@supercompany.com', 3),
+(4,'Contact4','Contact4 info','contact4 address','contact4@amazingcompany.com', 4);
 
 
 /*Table structure for table `document` */

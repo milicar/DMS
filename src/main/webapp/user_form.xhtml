@@ -27,20 +27,23 @@
                             <p:inputText id="lname" value="#{userController.user.lastName}"
                                          required="true" requiredMessage="Last name is not valid."/>
                             <h:message for="lname"/>
-                            <!--<p:outputLabel for="compChoice" value="Company: "/>-->
-
-
-<!--                            <p:selectOneMenu id="compChoice" value="#{userController.compName}">
-                                <f:selectItem itemLabel="Select Company" itemValue=""/>
-                                <c:forEach items="#{userController.companies}" var="cy">
-                                    <f:selectItem itemLabel="#{cy.companyName}" itemValue="#{cy.companyID}"/>
-
-                                </c:forEach>
-
-                            </p:selectOneMenu>-->
+                            
+                            <p:outputLabel value="Company:"/>
+                            <p:selectOneMenu id="chooseCompany" value="#{userController.companyIdString}" 
+                                             required="true" requiredMessage="Please select a company.">
+                                <f:selectItem itemLabel="Select Company" itemValue="#{null}"/>
+                                <f:selectItems value="#{companyController.companyList}" var="cl"
+                                               itemLabel="#{cl.companyName}" itemValue="#{cl.companyID}"/>
+                            </p:selectOneMenu>
+                            <h:message for="chooseCompany"/>
+                                
 
                             <p:outputLabel value="Role: "/>
-                            <p:inputText value="#{userController.user.userRole}"/>
+                            <p:selectOneMenu id="chooseRole" value="#{userController.user.userRole}">
+                                <f:selectItem itemLabel="user" itemValue="USER"/>
+                                <f:selectItem itemLabel="admin" itemValue="ADMIN"/>
+                            </p:selectOneMenu>
+                                             
                             <p:outputLabel value="Email: "/>
                             <p:inputText value="#{userController.user.email}"/>
 

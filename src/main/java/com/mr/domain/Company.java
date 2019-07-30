@@ -28,8 +28,7 @@ public class Company implements Serializable{
     @OneToMany(mappedBy = "parent")
     private List<FirstLevelProcess> processList;
     
-    @OneToMany
-    @JoinColumn(name = "company_id")
+    @OneToMany(mappedBy = "company")
     private List<Contact> contactList;
 
     public Company() {
